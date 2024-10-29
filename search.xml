@@ -15,6 +15,19 @@
     </entry>
     
     
+    
+    <entry>
+      <title>hexo搭建博客遇到的问题</title>
+      <link href="/2024/10/28/hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+      <url>/2024/10/28/hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+      
+        <content type="html"><![CDATA[<h1 id="关于hexo-d部署成功但网页端未更新的解决方案"><a href="#关于hexo-d部署成功但网页端未更新的解决方案" class="headerlink" title="关于hexo d部署成功但网页端未更新的解决方案"></a>关于hexo d部署成功但网页端未更新的解决方案</h1><p>诶，看了好多解决方法都没啥用，问题好像出在master和main分支上，但是我修改了之后反复确认也没解决（也不确定到底是不是这个理有问题了），最后还是找到了另一种方法部署和更新博客，以下示例方法仅供参考</p><ol><li>博客文件夹下新建一个仓库文件夹，我的叫 <strong>blog_repository</strong></li><li>在这个文件夹下打开git bash，输入如下内容（这里username请修改成你自己的名字）</li></ol><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> git@github.com:username/username.github.io.git .</span><br><span class="line">git branch --set-upstream-to=origin/main main</span><br><span class="line">git pull origin main</span><br><span class="line">git push origin main</span><br></pre></td></tr></table></figure><p>这些命令完成之后你就会发现已经网页端更新了（以上内容仅供参考，如有错误欢迎大佬指正）</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
   
   
 </search>
